@@ -14,6 +14,8 @@ Changelog
    Commit items for NEXT VERSION
    ..............................
 
+   - docs: remove mention of fromJSON
+
 .. scriv-start-here
 
 .. _changes_0-0-1:

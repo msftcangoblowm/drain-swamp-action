@@ -15,8 +15,7 @@ branding:
 inputs:
   plugin_parameters:
     description: >-
-      plugin parameter mapping. Serialized as a JSON
-      string via `toJSON(plugin_parameters)`
+      config settings key/value pairs mapping
     required: true
   toml_file_name:
     required: false

@@ -3,6 +3,8 @@
 drain-swamp-action
 ===================
 
+Make config settings available to Python build backend
+
 This technique is a workaround to an issue affecting setuptools. Any build backend
 is welcome to use this workaround / github action.
 
@@ -216,7 +218,7 @@ Basic example
      name: "Build Plugin parameters"
      uses: 'msftcangoblowm/drain-swamp-action@v1'
      with:
-        plugin_parameters: fromJSON('{"set-lock": "1", "kind": "current"}')
+        plugin_parameters: '{"set-lock": "1", "kind": "current"}'
         checkout: true
         cache: false
         python_version: '3.10'
@@ -252,7 +254,7 @@ Only in this case, specify the snip-co parameter.
    - name: "Build Plugin parameters"
      uses: 'msftcangoblowm/drain-swamp-action@v1'
      with:
-        plugin_parameters: fromJSON('{"set-lock": "1", "kind": "current", "snip-co": "little_shop_of_horrors_shrine_candles"}')
+        plugin_parameters: '{"set-lock": "1", "kind": "current", "snip-co": "little_shop_of_horrors_shrine_candles"}'
 
 Checks out repo and setup python py310 without the cache.
 
