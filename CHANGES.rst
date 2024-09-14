@@ -14,6 +14,7 @@ Changelog
    Commit items for NEXT VERSION
    ..............................
 
+   - fix(to_toml): set executable
    - fix(action): set script executable
    - fix(action): if run add indention
    - fix(action): try startsWith rather than contains
