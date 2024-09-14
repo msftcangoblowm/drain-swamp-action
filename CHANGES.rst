@@ -14,6 +14,7 @@ Changelog
    Commit items for NEXT VERSION
    ..............................
 
+   - fix(action): set script executable
    - fix(action): if run add indention
    - fix(action): try startsWith rather than contains
    - fix(action): set script permissions executable
