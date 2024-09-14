@@ -228,7 +228,7 @@ Basic example
       uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
       with:
         name: config-settings-toml-file
-        path: ${{ step.outputs.prepare-config-settings.ds_config_settings }}
+        path: ${{ steps.prepare-config-settings.outputs.ds_config_settings }}
 
    - name: "What did we get?"
      run: |
@@ -237,7 +237,7 @@ Basic example
    # If using tox, install requirements for tox and tox-gh
    - name: "Build package"
      env:
-       DS_CONFIG_SETTINGS: ${{ step.outputs.prepare-config-settings.ds_config_settings }}
+       DS_CONFIG_SETTINGS: ${{ steps.prepare-config-settings.outputs.ds_config_settings }}
      run: |
        python -m build
 

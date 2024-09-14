@@ -14,6 +14,7 @@ Changelog
    Commit items for NEXT VERSION
    ..............................
 
+   - fix(show-me): steps not step
    - docs: remove mention of fromJSON
 
 .. scriv-start-here
