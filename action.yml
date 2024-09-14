@@ -73,14 +73,16 @@ runs:
         mkdir -p ${{ runner.temp }}/ ||:
 
     - name: Set script executable -- MacOS or Linux
-      if: ${{ !startsWith(matrix.os, "windows") }}
+      if: ${{ ! startsWith(matrix.os, 'windows') }}
       shell: bash
-      run: chmod +x ${{ github.action_path }}/main.sh
+      run: |
+        chmod +x ${{ github.action_path }}/main.sh
 
     - name: Set script executable -- Windows
-      if: ${{ startsWith(matrix.os, "windows") }}
+      if: startsWith(matrix.os, 'windows')
       shell: bash
-      run: git update-index --chmod=+x ${{ github.action_path }}/main.sh
+      run: |
+        git update-index --chmod=+x ${{ github.action_path }}/main.sh
 
     - id: outcome
       name: >-
