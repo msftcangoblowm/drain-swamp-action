@@ -1,0 +1,16 @@
+from collections.abc import Mapping, Sequence
+from pathlib import Path
+from typing import TextIO
+
+DEFAULT_PROJECT_NAME: str
+DEFAULT_PROJECT_VERSION: str
+SECTION_NAME: str
+LINE_SEPERATOR: str
+TOML_PATH_VARIABLE: str
+FILE_APPEND_MODE: str
+
+def write_lines_to_streams(lines: Sequence[str], streams: Sequence[TextIO]) -> None: ...
+def set_gha_output(name: str, value: str) -> None: ...
+def set_final_result_outputs(path_toml: Path) -> None: ...
+def parse_as_dict(input_text: str) -> Mapping[str, str]: ...
+def main() -> None: ...

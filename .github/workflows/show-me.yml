@@ -1,0 +1,70 @@
+# Will not everything leading up to the ``python -m build`` step
+name: Prepare config_settings
+
+on:
+  push:
+    branches:
+    - v1
+  workflow_dispatch:
+
+defaults:
+  run:
+    shell: bash
+
+# Cancel any in-progress job or run
+# https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#concurrency
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  PIP_DISABLE_PIP_VERSION_CHECK: 1
+
+permissions:
+  contents: read  # This is required for actions/checkout
+
+jobs:
+  build:
+    name: "${{ matrix.python-version }} on ${{ matrix.os }}"
+    runs-on: "${{ matrix.os }}-latest"
+    strategy:
+      matrix:
+        os:
+          - ubuntu
+          - macos
+          - windows
+        python-version:
+          - "3.9"
+          - "3.10"
+          - "3.11"
+          - "3.12"
+          - "3.13"
+      fail-fast: false
+    steps:
+    - id: prepare-config-settings
+      name: "Build Plugin parameters"
+      uses: 'msftcangoblowm/drain-swamp-action@v1'
+      with:
+        plugin_parameters: '{"set-lock": "1", "kind": "current"}'
+        checkout: true
+        cache: true
+        python_version: "${{ matrix.python-version }}"
+
+   # One artifact -- a toml file
+    - name: "Download artifact"
+      uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
+      with:
+        name: config-settings-toml-file
+        path: ${{ step.prepare-config-settings.outputs.ds_config_settings }}
+
+    - name: "What did we get?"
+      run: |
+        ls -alR
+
+    # If using tox, install requirements for tox and tox-gh
+    - name: "Build package"
+      env:
+        DS_CONFIG_SETTINGS: ${{ step.prepare-config-settings.outputs.ds_config_settings }}
+      run: |
+        echo "python -m build (or tox -e build) would go here"
+        # python -m build

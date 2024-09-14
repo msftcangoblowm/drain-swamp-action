@@ -1,0 +1,92 @@
+# https://github.com/sphinx-notes/pages/blob/v3/action.yml
+# https://help.github.com/en/articles/metadata-syntax-for-github-actions
+---
+name: drain-swamp-action
+description: >-
+  Before build pass in drain-swamp build backend plugin parameters
+author: >-
+  Dave Faulkmore
+
+# https://feathericons.com/
+branding:
+  color: 'green'
+  icon: 'rewind'
+
+inputs:
+  plugin_parameters:
+    description: >-
+      plugin parameter mapping. Serialized as a JSON
+      string via `toJSON(plugin_parameters)`
+    required: true
+  toml_file_name:
+    required: false
+    default: 'setuptools-build.toml'
+  cache:
+    description: >-
+      Enable checkout cache
+    required: false
+    default: false
+  checkout:
+    description: >-
+      Whether to automatically checkout the repository, if false, user need to do it byself
+    required: false
+    default: true
+  python_version:
+    description: >-
+      Version of Python
+    required: false
+    default: '3.10'
+
+outputs:
+  ds_config_settings:
+    description: >-
+      environment variable containing path to config_settings toml file
+    value: ${{ steps.outcome.outputs.ds_config_settings }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Checkout
+      uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+      if: ${{ inputs.checkout == 'true' && inputs.cache == 'true' }}
+      with:
+        fetch-depth: 0
+    - name: Checkout
+      uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+      if: ${{ inputs.checkout == 'true' && inputs.cache == 'false' }}
+
+    - name: Setup python
+      uses: actions/setup-python@f677139bbe7f9c59b41e40162b753c062f5d49a3 # v5.2.0
+      if: ${{ inputs.cache == 'true' }}
+      with:
+        python-version: ${{ inputs.python_version }}
+        cache: 'pip'
+    - name: Setup python
+      uses: actions/setup-python@f677139bbe7f9c59b41e40162b753c062f5d49a3 # v5.2.0
+      if: ${{ inputs.cache == 'false' }}
+      with:
+        python-version: ${{ inputs.python_version }}
+
+    - name: Prepare temp folder
+      shell: bash
+      run: |
+        echo -e 'temp folder: ${{ runner.temp }} This path is available in environment variable, DS_CONFIG_SETTINGS'
+        mkdir ${{ runner.temp }}/
+
+    - id: outcome
+      name: >-
+        Prepare build backend plugin parameters
+      env:
+        # See https://github.com/actions/runner/issues/665
+        # https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/accessing-contextual-information-about-workflow-runs#example-usage-of-the-runner-context
+        PYTHONPATH: ${{ github.action_path }}/src
+        DS_CONFIG_SETTINGS: ${{ runner.temp }}/${{ inputs.toml_file_name }}
+        INPUT_PLUGIN_PARAMETERS: ${{ inputs.plugin_parameters }}
+      run: ${{ github.action_path }}/main.sh
+    - name: Upload artifact -- toml file
+      uses: actions/upload-artifact@v4
+      with:
+        name: TOML file
+        path: ${{ steps.outcome.output.ds_config_settings }}
+
+...
