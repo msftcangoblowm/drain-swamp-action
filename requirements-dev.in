@@ -1,0 +1,10 @@
+black
+blackdoc
+coverage
+isort
+flake8
+flake8-pyi
+flake8-pyproject
+pre-commit
+mypy
+validate-pyproject
