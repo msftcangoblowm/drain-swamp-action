@@ -14,6 +14,7 @@ Changelog
    Commit items for NEXT VERSION
    ..............................
 
+   - fix(action): archive name append matrix.os and version
    - fix(action): upload and download archive name must be same
    - fix(action): typo steps.outputs not steps.outout
    - fix(to_toml): set executable

@@ -105,7 +105,7 @@ runs:
     - name: Upload artifact -- toml file
       uses: actions/upload-artifact@v4
       with:
-        name: config-settings-toml-file
+        name: config-settings-toml-file-${{ matrix.os }}-${{ matrix.version }}
         path: ${{ steps.outcome.outputs.ds_config_settings }}
 
 ...
