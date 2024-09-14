@@ -72,6 +72,16 @@ runs:
         echo -e 'temp folder: ${{ runner.temp }} This path is available in environment variable, DS_CONFIG_SETTINGS'
         mkdir -p ${{ runner.temp }}/ ||:
 
+    - name: Set script executable -- MacOS or Linux
+      if: ${{ !contains(matrix.os, "windows") }}
+      shell: bash
+      run: chmod +x ${{ github.action_path }}/main.sh
+
+    - name: Set script executable -- Windows
+      if: ${{ contains(matrix.os, "windows") }}
+      shell: bash
+      run: git update-index --chmod=+x ${{ github.action_path }}/main.sh
+
     - id: outcome
       name: >-
         Prepare build backend plugin parameters

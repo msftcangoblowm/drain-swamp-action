@@ -14,6 +14,7 @@ Changelog
    Commit items for NEXT VERSION
    ..............................
 
+   - fix(action): set script permissions executable
    - fix: mkdir prevent fail
    - fix: requirements.txt is required
    - fix(action): specify shell bash
