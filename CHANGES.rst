@@ -14,6 +14,7 @@ Changelog
    Commit items for NEXT VERSION
    ..............................
 
+   - fix(action): typo steps.outputs not steps.outout
    - fix(to_toml): set executable
    - fix(action): set script executable
    - fix(action): if run add indention

@@ -54,6 +54,30 @@ runs:
       uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
       if: ${{ inputs.checkout == 'true' && inputs.cache == 'false' }}
 
+    - name: Set script executable -- MacOS or Linux
+      if: ${{ ! startsWith(matrix.os, 'windows') }}
+      shell: bash
+      env:
+        PYTHONPATH: ${{ github.action_path }}/src
+      run: |
+        chmod +x ${{ github.action_path }}/main.sh
+        chmod +x ${{ env.PYTHONPATH }}/to_toml.py
+
+    - name: Set script executable -- Windows
+      if: startsWith(matrix.os, 'windows')
+      shell: bash
+      env:
+        PYTHONPATH: ${{ github.action_path }}/src
+      run: |
+        git update-index --chmod=+x ${{ github.action_path }}/main.sh
+        git update-index --chmod=+x ${{ env.PYTHONPATH }}/to_toml.py
+
+    - name: Prepare temp folder
+      shell: bash
+      run: |
+        echo -e 'temp folder: ${{ runner.temp }} This path is available in environment variable, DS_CONFIG_SETTINGS'
+        mkdir -p ${{ runner.temp }}/ ||:
+
     - name: Setup python
       uses: actions/setup-python@f677139bbe7f9c59b41e40162b753c062f5d49a3 # v5.2.0
       if: ${{ inputs.cache == 'true' }}
@@ -66,24 +90,6 @@ runs:
       with:
         python-version: ${{ inputs.python_version }}
 
-    - name: Prepare temp folder
-      shell: bash
-      run: |
-        echo -e 'temp folder: ${{ runner.temp }} This path is available in environment variable, DS_CONFIG_SETTINGS'
-        mkdir -p ${{ runner.temp }}/ ||:
-
-    - name: Set script executable -- MacOS or Linux
-      if: ${{ ! startsWith(matrix.os, 'windows') }}
-      shell: bash
-      run: |
-        chmod +x ${{ github.action_path }}/main.sh
-
-    - name: Set script executable -- Windows
-      if: startsWith(matrix.os, 'windows')
-      shell: bash
-      run: |
-        git update-index --chmod=+x ${{ github.action_path }}/main.sh
-
     - id: outcome
       name: >-
         Prepare build backend plugin parameters
@@ -95,10 +101,11 @@ runs:
         INPUT_PLUGIN_PARAMETERS: ${{ inputs.plugin_parameters }}
       shell: bash
       run: ${{ github.action_path }}/main.sh
+
     - name: Upload artifact -- toml file
       uses: actions/upload-artifact@v4
       with:
         name: TOML file
-        path: ${{ steps.outcome.output.ds_config_settings }}
+        path: ${{ steps.outcome.outputs.ds_config_settings }}
 
 ...
