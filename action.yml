@@ -83,7 +83,7 @@ runs:
       if: ${{ inputs.cache == 'true' }}
       with:
         python-version: ${{ inputs.python_version }}
-        cache: 'pip'
+        # cache: 'pip'
     - name: Setup python
       uses: actions/setup-python@f677139bbe7f9c59b41e40162b753c062f5d49a3 # v5.2.0
       if: ${{ inputs.cache == 'false' }}
