@@ -81,6 +81,7 @@ runs:
         PYTHONPATH: ${{ github.action_path }}/src
         DS_CONFIG_SETTINGS: ${{ runner.temp }}/${{ inputs.toml_file_name }}
         INPUT_PLUGIN_PARAMETERS: ${{ inputs.plugin_parameters }}
+      shell: bash
       run: ${{ github.action_path }}/main.sh
     - name: Upload artifact -- toml file
       uses: actions/upload-artifact@v4
