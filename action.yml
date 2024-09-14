@@ -70,7 +70,7 @@ runs:
       shell: bash
       run: |
         echo -e 'temp folder: ${{ runner.temp }} This path is available in environment variable, DS_CONFIG_SETTINGS'
-        mkdir ${{ runner.temp }}/
+        mkdir -p ${{ runner.temp }}/ ||:
 
     - id: outcome
       name: >-

@@ -25,7 +25,7 @@ echo ::endgroup::
 
 # echo ::group:: Creating tmp directory
 # build_dir=/tmp
-# mkdir -p $build_dir || true
+# mkdir -p $build_dir ||:
 # echo Temp directory \"$build_dir\" is created
 # echo ::endgroup::
 

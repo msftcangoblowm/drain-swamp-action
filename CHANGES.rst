@@ -14,6 +14,7 @@ Changelog
    Commit items for NEXT VERSION
    ..............................
 
+   - fix: mkdir prevent fail
    - fix: requirements.txt is required
    - fix(action): specify shell bash
    - fix(show-me): steps not step
