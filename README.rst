@@ -148,7 +148,7 @@ Github workflows can use this drain-swamp-action to simplify the process.
      with:
         plugin_parameters: '{"set-lock": "1", "kind": "current"}'
         checkout: true
-        cache: false
+        fetch_tags: true
         python_version: '3.10'
 
 Can easily and intuitively add more build parameters to the JSON str.
@@ -187,9 +187,9 @@ IO
    "plugin_parameters", "a JSON str holding key/value pairs to deliver as config_settings thru the subprocess barrier"
    "toml_file_name", "| file name to store config_settings in TOML format.
    | Default \'setuptools-build.toml\'"
-   "checkout", "| True to checkout repo. Let us checkout the repo, one less thing to do.
+   "checkout", "| ``true`` to checkout repo. Let us checkout the repo, one less thing to do.
    | Default true"
-   "cache", "| If True checkout with \'fetch-depth: 0\' and setup python with cache: \'pip\'
+   "fetch_tags", "| Checkout alone does not get git tags. ``true`` to fetch git tags info.
    | Default false"
    "python_version", "| Version of python to use.
    | Default \'3.10\'"
@@ -198,7 +198,26 @@ IO
    :header: outputs, desc
    :widths: 120, 350
 
-   "ds_config_settings", "Absolute path to the toml file. Set this into environment variable, DS_CONFIG_SETTINGS"
+   "ds_config_settings", "| Absolute path to the toml file. Set this into environment variable, DS_CONFIG_SETTINGS.
+   | Path to the toml file within the runners temp folder"
+
+Example usage, although ``env.DS_CONFIG_SETTINGS`` should already exist
+along with the TOML file
+
+.. code-block:: text
+
+   id: steps-id-goes-here
+   env:
+     DS_CONFIG_SETTINGS: ${{ steps.steps-id-goes-here.outputs.ds_config_settings }}
+
+**Not shown**
+
+.. code-block:: text
+
+   On windows, value (an absolute path) needs single quotes.
+
+   if: ${{ ! startsWith(matrix.os, 'windows') }}
+   if: startsWith(matrix.os, 'windows')
 
 .. _drain-swamp-action-examples:
 
@@ -220,15 +239,8 @@ Basic example
      with:
         plugin_parameters: '{"set-lock": "1", "kind": "current"}'
         checkout: true
-        cache: false
+        fetch_tags: true
         python_version: '3.10'
-
-   # One artifact -- a toml file
-   - name: "Download artifact"
-      uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
-      with:
-        name: config-settings-toml-file
-        path: ${{ steps.prepare-config-settings.outputs.ds_config_settings }}
 
    - name: "What did we get?"
      run: |
@@ -240,6 +252,11 @@ Basic example
        DS_CONFIG_SETTINGS: ${{ steps.prepare-config-settings.outputs.ds_config_settings }}
      run: |
        python -m build
+
+.. note: Windows paths
+
+   On Windows, single quotes preserves (the backslashes in) the path. Add single quotes
+   around ``env.DS_CONFIG_SETTINGS``'s value
 
 Multiple snippets
 """"""""""""""""""

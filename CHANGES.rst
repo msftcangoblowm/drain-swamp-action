@@ -14,37 +14,32 @@ Changelog
    Commit items for NEXT VERSION
    ..............................
 
-   - fix(action): show output
-   - fix(action): preserve backslashes
-   - fix(action): run python scripts without main.sh
-   - fix(action): remove step show paths
-   - fix(main): no single quotes
-   - fix(main): execute py script rely on hashbang
-   - fix: move python setup step up top
-   - fix(gh_joinpath): line seperator between lines
-   - feat: leverage GITHUB_ENV to create environment variables
-   - fix(main): python get path via environment variable
-   - fix(main): fix path to to_toml.py
-   - fix: steps must have unique id
-   - fix: env variable path seperator split steps by matrix.os
-   - fix: OS independent joinpath
-   - fix(action): cache pip maybe needs cache-dependency-path
-   - fix(action): try without upload / download artifact
-   - fix(action): archive name append matrix.os and version
-   - fix(action): upload and download archive name must be same
-   - fix(action): typo steps.outputs not steps.outout
-   - fix(to_toml): set executable
-   - fix(action): set script executable
-   - fix(action): if run add indention
-   - fix(action): try startsWith rather than contains
-   - fix(action): set script permissions executable
-   - fix: mkdir prevent fail
-   - fix: requirements.txt is required
-   - fix(action): specify shell bash
-   - fix(show-me): steps not step
-   - docs: remove mention of fromJSON
-
 .. scriv-start-here
+
+.. _changes_1-0-0:
+
+Version 1.0.0 — 2024-09-15
+--------------------------
+
+- feat: OS independent
+- feat: add input fetch_tags
+- feat: leverage GITHUB_ENV to create environment variables
+- feat(gh_joinpath): OS independent joinpath
+- fix: remove input cache
+- fix: remove main.sh
+- fix(action): run python scripts without main.sh
+- fix: move python setup step up top
+- fix(gh_joinpath): line seperator between lines
+- fix: steps must have unique id
+- fix: env variable path seperator split steps by matrix.os
+- fix: disable cache pip. Does not work and causes runner to fail
+- fix(action): try without upload / download artifact
+- fix(action): set python scripts executable
+- fix(action): typo steps.outputs not steps.outout
+- fix(action): try startsWith rather than contains
+- fix: requirements.txt is required
+- fix(action): specify shell bash
+- docs: remove mention of fromJSON
 
 .. _changes_0-0-1:
 

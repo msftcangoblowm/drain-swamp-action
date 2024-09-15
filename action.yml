@@ -20,9 +20,9 @@ inputs:
   toml_file_name:
     required: false
     default: 'setuptools-build.toml'
-  cache:
+  fetch_tags:
     description: >-
-      Enable checkout cache
+      Fetch git tags
     required: false
     default: false
   checkout:
@@ -47,29 +47,21 @@ runs:
   steps:
     - name: Checkout
       uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
-      if: ${{ inputs.checkout == 'true' && inputs.cache == 'true' }}
+      if: ${{ inputs.checkout == 'true' && inputs.fetch_tags == 'true' }}
       with:
         fetch-depth: 0
     - name: Checkout
       uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
-      if: ${{ inputs.checkout == 'true' && inputs.cache == 'false' }}
+      if: ${{ inputs.checkout == 'true' && inputs.fetch_tags == 'false' }}
 
     - name: Setup python
       uses: actions/setup-python@f677139bbe7f9c59b41e40162b753c062f5d49a3 # v5.2.0
-      if: ${{ inputs.cache == 'true' }}
       with:
         python-version: ${{ inputs.python_version }}
         allow-prereleases: true
         # cache: pip
         # cache-dependency-path: |
         #   requirements.txt
-
-    - name: Setup python
-      uses: actions/setup-python@f677139bbe7f9c59b41e40162b753c062f5d49a3 # v5.2.0
-      if: ${{ inputs.cache == 'false' }}
-      with:
-        allow-prereleases: true
-        python-version: ${{ inputs.python_version }}
 
     # Writes to GITHUB_ENV file. In other steps env.TO_TOML and env.MAIN_SH will be available
     - name: Set paths
