@@ -44,7 +44,7 @@ echo ::group:: config_settings write into TOML file
 # '{ "set-lock": "1", "kind": "0.0.1" }'
 # to_toml=$(python -c 'import os; import platform; from pathlib import PurePosixPath, PureWindowsPath; import sys; cls = PureWindowsPath if platform.system().lower() == "windows" else PurePosixPath; path_f = cls(os.environ.get("GITHUB_WORKSPACE")).joinpath("src", "to_toml.py"); sys.stdout.write(str(path_f))')
 
-$python_path $TO_TOML
+'$TO_TOML'
 # exit_code=$?
 # if [[ "$exit_code" -ne 0 ]]; then
 #     echo "drain-swamp-action exit code: $exit_code"

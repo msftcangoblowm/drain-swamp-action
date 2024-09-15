@@ -14,6 +14,7 @@ Changelog
    Commit items for NEXT VERSION
    ..............................
 
+   - fix(main): execute py script rely on hashbang
    - fix: move python setup step up top
    - fix(gh_joinpath): line seperator between lines
    - feat: leverage GITHUB_ENV to create environment variables
