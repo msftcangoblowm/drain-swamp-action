@@ -8,10 +8,10 @@ echo ::group:: Initialize various paths
 repo_dir=$GITHUB_WORKSPACE/$INPUT_REPOSITORY_PATH
 # doc_dir=$repo_dir/$INPUT_DOCUMENTATION_PATH
 # https://stackoverflow.com/a/4774063/4799273
-action_dir=$PYTHONPATH
+# action_dir=$PYTHONPATH
 site_packages_dir=$(python -c 'import site; print(site.getsitepackages()[0])')
 
-echo Action: $action_dir
+# echo Action: $action_dir
 echo Workspace: $GITHUB_WORKSPACE
 echo Repository: $repo_dir
 # echo Documentation: $doc_dir
@@ -29,7 +29,7 @@ echo ::endgroup::
 # echo Temp directory \"$build_dir\" is created
 # echo ::endgroup::
 
-echo ::group:: Create and upload artifact -- TOML file
+echo ::group:: config_settings write into TOML file
 
 # execute python script
 # Inputs -- environment variables: DS_CONFIG_SETTINGS, INPUT_PLUGIN_PARAMETERS, GITHUB_STEP_SUMMARY
@@ -39,7 +39,8 @@ echo ::group:: Create and upload artifact -- TOML file
 #
 # Example JSON str
 # '{ "set-lock": "1", "kind": "0.0.1" }'
-$action_dir/to_toml.py
+to_toml=$(python -c 'from pathlib import Path; import sys; path_f = Path("${GITHUB_WORKSPACE}").joinpath("src", "to_toml.py"); sys.stdout.write(str(path_f))')
+$to_toml
 exit_code=$?
 if [[ exit_code -ne 0 ]]; then
     echo "drain-swamp-action exit code: $exit_code"

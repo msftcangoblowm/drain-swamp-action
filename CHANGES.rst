@@ -14,6 +14,7 @@ Changelog
    Commit items for NEXT VERSION
    ..............................
 
+   - fix(main): fix path to to_toml.py
    - fix: steps must have unique id
    - fix: env variable path seperator split steps by matrix.os
    - fix: OS independent joinpath
