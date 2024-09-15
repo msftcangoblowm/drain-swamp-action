@@ -111,7 +111,7 @@ runs:
         INPUT_PLUGIN_PARAMETERS: ${{ inputs.plugin_parameters }}
       shell: bash
       run: |
-        python ${{ env.TO_TOML }}
+        python '${{ env.TO_TOML }}'
 
     - id: outcome_other
       if: ${{ ! startsWith(matrix.os, 'windows') }}
@@ -124,5 +124,15 @@ runs:
       shell: bash
       run: |
         python ${{ env.TO_TOML }}
+
+    - name: Show output
+      if: ${{ ! startsWith(matrix.os, 'windows') }}
+      env:
+        DS_CONFIG_SETTINGS: ${{ steps.outcome_other.outputs.ds_config_settings }}
+      shell: bash
+      run: |
+        set -xe
+        echo DS_CONFIG_SETTINGS contains path: ${{ env.DS_CONFIG_SETTINGS }}
+        cat ${{ env.DS_CONFIG_SETTINGS }}
 
 ...
