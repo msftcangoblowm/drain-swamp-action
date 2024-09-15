@@ -54,25 +54,34 @@ runs:
       uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
       if: ${{ inputs.checkout == 'true' && inputs.cache == 'false' }}
 
+    # Writes to GITHUB_ENV file. In other steps env.TO_TOML and env.MAIN_SH will be available
+    - name: Set paths
+      shell: bash
+      run: |
+        set -xe
+        python gh_joinpath.py --name="TO_TOML" "src" "to_toml.py"
+        python gh_joinpath.py --name="MAIN_SH" "main.sh"
+
+    - name: Show paths
+      shell: bash
+      run: |
+        echo -e ${{ env.MAIN_SH }} --> ${{ env.TO_TOML }}
+
     - name: Set script executable -- MacOS or Linux
       if: ${{ ! startsWith(matrix.os, 'windows') }}
       shell: bash
       run: |
         set -xe
-        to_toml=$(python -c 'from pathlib import Path; import sys; path_f = Path("${{ github.action_path }}").joinpath("src", "to_toml.py"); sys.stdout.write(str(path_f))')
-        main_sh=$(python -c 'from pathlib import Path; import sys; path_f = Path("${{ github.action_path }}").joinpath("main.sh"); sys.stdout.write(str(path_f))')
-        chmod +x $main_sh
-        chmod +x $to_toml
+        chmod +x ${{ env.MAIN_SH }}
+        chmod +x ${{ env.TO_TOML }}
 
     - name: Set script executable -- Windows
       if: startsWith(matrix.os, 'windows')
       shell: bash
       run: |
         set -xe
-        to_toml=$(python -c 'from pathlib import Path; import sys; path_f = Path("${{ github.action_path }}").joinpath("src", "to_toml.py"); sys.stdout.write(str(path_f))')
-        main_sh=$(python -c 'from pathlib import Path; import sys; path_f = Path("${{ github.action_path }}").joinpath("main.sh"); sys.stdout.write(str(path_f))')
-        git update-index --chmod=+x $main_sh
-        git update-index --chmod=+x $to_toml
+        git update-index --chmod=+x ${{ env.MAIN_SH }}
+        git update-index --chmod=+x ${{ env.TO_TOML }}
 
     - name: Prepare temp folder
       shell: bash
@@ -87,9 +96,9 @@ runs:
       with:
         python-version: ${{ inputs.python_version }}
         allow-prereleases: true
-        cache: pip
-        cache-dependency-path: |
-          requirements.txt
+        # cache: pip
+        # cache-dependency-path: |
+        #   requirements.txt
 
     - name: Setup python
       uses: actions/setup-python@f677139bbe7f9c59b41e40162b753c062f5d49a3 # v5.2.0
@@ -110,8 +119,7 @@ runs:
       shell: bash
       run: |
         set -xe
-        main_sh=$(python -c 'from pathlib import Path; import sys; path_f = Path("${{ github.action_path }}").joinpath("main.sh"); sys.stdout.write(str(path_f))')
-        $main_sh
+        ${{ env.MAIN_SH }}
 
     - id: outcome_other
       if: ${{ ! startsWith(matrix.os, 'windows') }}
@@ -125,7 +133,6 @@ runs:
       shell: bash
       run: |
         set -xe
-        main_sh=$(python -c 'from pathlib import Path; import sys; path_f = Path("${{ github.action_path }}").joinpath("main.sh"); sys.stdout.write(str(path_f))')
-        $main_sh
+        ${{ env.MAIN_SH }}
 
 ...

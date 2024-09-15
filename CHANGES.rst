@@ -14,6 +14,7 @@ Changelog
    Commit items for NEXT VERSION
    ..............................
 
+   - feat: leverage GITHUB_ENV to create environment variables
    - fix(main): python get path via environment variable
    - fix(main): fix path to to_toml.py
    - fix: steps must have unique id

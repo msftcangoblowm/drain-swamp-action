@@ -16,6 +16,7 @@ echo Workspace: $GITHUB_WORKSPACE
 echo Repository: $repo_dir
 # echo Documentation: $doc_dir
 echo Python site-packages directory: $site_packages_dir
+echo to_toml.py path: $TO_TOML
 
 echo ::endgroup::
 
@@ -39,10 +40,10 @@ echo ::group:: config_settings write into TOML file
 #
 # Example JSON str
 # '{ "set-lock": "1", "kind": "0.0.1" }'
-to_toml=$(python -c 'import os; from pathlib import Path; import sys; path_f = Path(os.environ.get("GITHUB_WORKSPACE")).joinpath("src", "to_toml.py"); sys.stdout.write(str(path_f))')
-$to_toml
+# to_toml=$(python -c 'import os; import platform; from pathlib import PurePosixPath, PureWindowsPath; import sys; cls = PureWindowsPath if platform.system().lower() == "windows" else PurePosixPath; path_f = cls(os.environ.get("GITHUB_WORKSPACE")).joinpath("src", "to_toml.py"); sys.stdout.write(str(path_f))')
+$TO_TOML
 exit_code=$?
-if [[ exit_code -ne 0 ]]; then
+if [[ $exit_code -ne 0 ]]; then
     echo "drain-swamp-action exit code: $exit_code"
 fi
 
