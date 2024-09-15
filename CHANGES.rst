@@ -14,6 +14,7 @@ Changelog
    Commit items for NEXT VERSION
    ..............................
 
+   - fix: steps must have unique id
    - fix: env variable path seperator split steps by matrix.os
    - fix: OS independent joinpath
    - fix(action): cache pip maybe needs cache-dependency-path

@@ -98,7 +98,7 @@ runs:
         allow-prereleases: true
         python-version: ${{ inputs.python_version }}
 
-    - id: outcome
+    - id: outcome_win
       if: startsWith(matrix.os, 'windows')
       name: >-
         Prepare build backend plugin parameters
@@ -113,7 +113,7 @@ runs:
         main_sh=$(python -c 'from pathlib import Path; import sys; path_f = Path("${{ github.action_path }}").joinpath("main.sh"); sys.stdout.write(str(path_f))')
         $main_sh
 
-    - id: outcome
+    - id: outcome_other
       if: ${{ ! startsWith(matrix.os, 'windows') }}
       name: >-
         Prepare build backend plugin parameters
