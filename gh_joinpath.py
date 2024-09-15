@@ -79,7 +79,7 @@ def main():
     # write to the file
     env_file = os.environ.get("GITHUB_ENV")
     with open(env_file, "a") as env_file:
-        env_file.write(f"{env_var_name!s}={path_f!s}")
+        env_file.write(f"{env_var_name!s}={path_f!s}{os.linesep}")
 
 
 if __name__ == "__main__":
