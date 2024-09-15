@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# set -x
+set -x
 set -e
 
 echo ::group:: Initialize various paths
@@ -12,11 +12,13 @@ repo_dir=$GITHUB_WORKSPACE/$INPUT_REPOSITORY_PATH
 site_packages_dir=$(python -c 'import site; print(site.getsitepackages()[0])')
 
 # echo Action: $action_dir
-echo Workspace: $GITHUB_WORKSPACE
-echo Repository: $repo_dir
+echo "Workspace: $GITHUB_WORKSPACE"
+echo "Repository: $repo_dir"
 # echo Documentation: $doc_dir
-echo Python site-packages directory: $site_packages_dir
-echo to_toml.py path: $TO_TOML
+echo "Python site-packages directory: $site_packages_dir"
+echo "to_toml.py path: $TO_TOML"
+python_path=$(python -c 'import sys; sys.stdout.write(sys.executable)')
+echo "python_path: $python_path"
 
 echo ::endgroup::
 
@@ -41,12 +43,13 @@ echo ::group:: config_settings write into TOML file
 # Example JSON str
 # '{ "set-lock": "1", "kind": "0.0.1" }'
 # to_toml=$(python -c 'import os; import platform; from pathlib import PurePosixPath, PureWindowsPath; import sys; cls = PureWindowsPath if platform.system().lower() == "windows" else PurePosixPath; path_f = cls(os.environ.get("GITHUB_WORKSPACE")).joinpath("src", "to_toml.py"); sys.stdout.write(str(path_f))')
-$TO_TOML
-exit_code=$?
-if [[ $exit_code -ne 0 ]]; then
-    echo "drain-swamp-action exit code: $exit_code"
-fi
+
+$python_path $TO_TOML
+# exit_code=$?
+# if [[ "$exit_code" -ne 0 ]]; then
+#     echo "drain-swamp-action exit code: $exit_code"
+#fi
 
 echo ::endgroup::
 
-exit $exit_code
+# exit $exit_code
