@@ -39,7 +39,7 @@ echo ::group:: config_settings write into TOML file
 #
 # Example JSON str
 # '{ "set-lock": "1", "kind": "0.0.1" }'
-to_toml=$(python -c 'from pathlib import Path; import sys; path_f = Path("${GITHUB_WORKSPACE}").joinpath("src", "to_toml.py"); sys.stdout.write(str(path_f))')
+to_toml=$(python -c 'import os; from pathlib import Path; import sys; path_f = Path(os.environ.get("GITHUB_WORKSPACE")).joinpath("src", "to_toml.py"); sys.stdout.write(str(path_f))')
 $to_toml
 exit_code=$?
 if [[ exit_code -ne 0 ]]; then
