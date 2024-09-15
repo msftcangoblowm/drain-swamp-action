@@ -75,9 +75,8 @@ runs:
     - name: Set paths
       shell: bash
       run: |
-        set -xe
-        gh_joinpath.py --name="TO_TOML" "src" "to_toml.py"
-        gh_joinpath.py --name="MAIN_SH" "main.sh"
+        python gh_joinpath.py --name="TO_TOML" "src" "to_toml.py"
+        python gh_joinpath.py --name="MAIN_SH" "main.sh"
 
     - name: Set script executable -- MacOS or Linux
       if: ${{ ! startsWith(matrix.os, 'windows') }}
@@ -112,8 +111,7 @@ runs:
         INPUT_PLUGIN_PARAMETERS: ${{ inputs.plugin_parameters }}
       shell: bash
       run: |
-        set -xe
-        ${{ env.MAIN_SH }}
+        python ${{ env.TO_TOML }}
 
     - id: outcome_other
       if: ${{ ! startsWith(matrix.os, 'windows') }}
@@ -125,7 +123,6 @@ runs:
         INPUT_PLUGIN_PARAMETERS: ${{ inputs.plugin_parameters }}
       shell: bash
       run: |
-        set -xe
-        ${{ env.MAIN_SH }}
+        python ${{ env.TO_TOML }}
 
 ...
