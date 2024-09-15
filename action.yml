@@ -59,8 +59,8 @@ runs:
       shell: bash
       run: |
         set -xe
-        to_toml=$(python -c "from pathlib import Path; import sys; path_f = Path(${{ github.action_path }}).joinpath('src', 'to_toml.py'); sys.stdout.write(str(path_f))")
-        main_sh=$(python -c "from pathlib import Path; import sys; path_f = Path(${{ github.action_path }}).joinpath('main.sh'); sys.stdout.write(str(path_f))")
+        to_toml=$(python -c 'from pathlib import Path; import sys; path_f = Path("${{ github.action_path }}").joinpath("src", "to_toml.py"); sys.stdout.write(str(path_f))')
+        main_sh=$(python -c 'from pathlib import Path; import sys; path_f = Path("${{ github.action_path }}").joinpath("main.sh"); sys.stdout.write(str(path_f))')
         chmod +x $main_sh
         chmod +x $to_toml
 
@@ -69,8 +69,8 @@ runs:
       shell: bash
       run: |
         set -xe
-        to_toml=$(python -c "from pathlib import Path; import sys; path_f = Path(${{ github.action_path }}).joinpath('src', 'to_toml.py'); sys.stdout.write(str(path_f))")
-        main_sh=$(python -c "from pathlib import Path; import sys; path_f = Path(${{ github.action_path }}).joinpath('main.sh'); sys.stdout.write(str(path_f))")
+        to_toml=$(python -c 'from pathlib import Path; import sys; path_f = Path("${{ github.action_path }}").joinpath("src", "to_toml.py"); sys.stdout.write(str(path_f))')
+        main_sh=$(python -c 'from pathlib import Path; import sys; path_f = Path("${{ github.action_path }}").joinpath("main.sh"); sys.stdout.write(str(path_f))')
         git update-index --chmod=+x $main_sh
         git update-index --chmod=+x $to_toml
 
@@ -99,18 +99,33 @@ runs:
         python-version: ${{ inputs.python_version }}
 
     - id: outcome
+      if: startsWith(matrix.os, 'windows')
       name: >-
         Prepare build backend plugin parameters
       env:
         # See https://github.com/actions/runner/issues/665
         # https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/accessing-contextual-information-about-workflow-runs#example-usage-of-the-runner-context
-        PYTHONPATH: ${{ github.action_path }}/src
+        DS_CONFIG_SETTINGS: ${{ runner.temp }}\\${{ inputs.toml_file_name }}
+        INPUT_PLUGIN_PARAMETERS: ${{ inputs.plugin_parameters }}
+      shell: bash
+      run: |
+        set -xe
+        main_sh=$(python -c 'from pathlib import Path; import sys; path_f = Path("${{ github.action_path }}").joinpath("main.sh"); sys.stdout.write(str(path_f))')
+        $main_sh
+
+    - id: outcome
+      if: ${{ ! startsWith(matrix.os, 'windows') }}
+      name: >-
+        Prepare build backend plugin parameters
+      env:
+        # See https://github.com/actions/runner/issues/665
+        # https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/accessing-contextual-information-about-workflow-runs#example-usage-of-the-runner-context
         DS_CONFIG_SETTINGS: ${{ runner.temp }}/${{ inputs.toml_file_name }}
         INPUT_PLUGIN_PARAMETERS: ${{ inputs.plugin_parameters }}
       shell: bash
       run: |
         set -xe
-        main_sh=$(python -c "from pathlib import Path; import sys; path_f = Path(${{ github.action_path }}).joinpath('main.sh'); sys.stdout.write(str(path_f))")
+        main_sh=$(python -c 'from pathlib import Path; import sys; path_f = Path("${{ github.action_path }}").joinpath("main.sh"); sys.stdout.write(str(path_f))')
         $main_sh
 
 ...
