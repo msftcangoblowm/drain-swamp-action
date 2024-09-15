@@ -76,14 +76,14 @@ runs:
       shell: bash
       run: |
         python gh_joinpath.py --name="TO_TOML" "src" "to_toml.py"
-        python gh_joinpath.py --name="MAIN_SH" "main.sh"
+        # python gh_joinpath.py --name="MAIN_SH" "main.sh"
 
     - name: Set script executable -- MacOS or Linux
       if: ${{ ! startsWith(matrix.os, 'windows') }}
       shell: bash
       run: |
         set -xe
-        chmod +x ${{ env.MAIN_SH }}
+        # chmod +x ${{ env.MAIN_SH }}
         chmod +x ${{ env.TO_TOML }}
 
     - name: Set script executable -- Windows
@@ -91,8 +91,8 @@ runs:
       shell: bash
       run: |
         set -xe
-        git update-index --chmod=+x ${{ env.MAIN_SH }}
-        git update-index --chmod=+x ${{ env.TO_TOML }}
+        # git update-index --chmod=+x '${{ env.MAIN_SH }}'
+        git update-index --chmod=+x '${{ env.TO_TOML }}'
 
     - name: Prepare temp folder
       shell: bash

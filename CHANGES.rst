@@ -14,6 +14,7 @@ Changelog
    Commit items for NEXT VERSION
    ..............................
 
+   - fix(action): preserve backslashes
    - fix(action): run python scripts without main.sh
    - fix(action): remove step show paths
    - fix(main): no single quotes
