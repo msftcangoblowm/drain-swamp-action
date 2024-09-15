@@ -57,37 +57,45 @@ runs:
     - name: Set script executable -- MacOS or Linux
       if: ${{ ! startsWith(matrix.os, 'windows') }}
       shell: bash
-      env:
-        PYTHONPATH: ${{ github.action_path }}/src
       run: |
-        chmod +x ${{ github.action_path }}/main.sh
-        chmod +x ${{ env.PYTHONPATH }}/to_toml.py
+        set -xe
+        to_toml=$(python -c "from pathlib import Path; import sys; path_f = Path(${{ github.action_path }}).joinpath('src', 'to_toml.py'); sys.stdout.write(str(path_f))")
+        main_sh=$(python -c "from pathlib import Path; import sys; path_f = Path(${{ github.action_path }}).joinpath('main.sh'); sys.stdout.write(str(path_f))")
+        chmod +x $main_sh
+        chmod +x $to_toml
 
     - name: Set script executable -- Windows
       if: startsWith(matrix.os, 'windows')
       shell: bash
-      env:
-        PYTHONPATH: ${{ github.action_path }}/src
       run: |
-        git update-index --chmod=+x ${{ github.action_path }}/main.sh
-        git update-index --chmod=+x ${{ env.PYTHONPATH }}/to_toml.py
+        set -xe
+        to_toml=$(python -c "from pathlib import Path; import sys; path_f = Path(${{ github.action_path }}).joinpath('src', 'to_toml.py'); sys.stdout.write(str(path_f))")
+        main_sh=$(python -c "from pathlib import Path; import sys; path_f = Path(${{ github.action_path }}).joinpath('main.sh'); sys.stdout.write(str(path_f))")
+        git update-index --chmod=+x $main_sh
+        git update-index --chmod=+x $to_toml
 
     - name: Prepare temp folder
       shell: bash
       run: |
+        set -xe
         echo -e 'temp folder: ${{ runner.temp }} This path is available in environment variable, DS_CONFIG_SETTINGS'
-        mkdir -p ${{ runner.temp }}/ ||:
+        mkdir -p ${{ runner.temp }} ||:
 
     - name: Setup python
       uses: actions/setup-python@f677139bbe7f9c59b41e40162b753c062f5d49a3 # v5.2.0
       if: ${{ inputs.cache == 'true' }}
       with:
         python-version: ${{ inputs.python_version }}
-        # cache: 'pip'
+        allow-prereleases: true
+        cache: pip
+        cache-dependency-path: |
+          requirements.txt
+
     - name: Setup python
       uses: actions/setup-python@f677139bbe7f9c59b41e40162b753c062f5d49a3 # v5.2.0
       if: ${{ inputs.cache == 'false' }}
       with:
+        allow-prereleases: true
         python-version: ${{ inputs.python_version }}
 
     - id: outcome
@@ -100,6 +108,9 @@ runs:
         DS_CONFIG_SETTINGS: ${{ runner.temp }}/${{ inputs.toml_file_name }}
         INPUT_PLUGIN_PARAMETERS: ${{ inputs.plugin_parameters }}
       shell: bash
-      run: ${{ github.action_path }}/main.sh
+      run: |
+        set -xe
+        main_sh=$(python -c "from pathlib import Path; import sys; path_f = Path(${{ github.action_path }}).joinpath('main.sh'); sys.stdout.write(str(path_f))")
+        $main_sh
 
 ...

@@ -27,19 +27,37 @@ jobs:
   build:
     name: >-
       ${{ matrix.python-version }} on ${{ matrix.os }}
-    runs-on: "${{ matrix.os }}-latest"
+    runs-on: "${{ matrix.os }}"
     strategy:
       matrix:
         os:
-          - ubuntu
-          - macos
-          - windows
+          # https://launchpad.net/~deadsnakes/+archive/ubuntu/nightly/+packages
+          # https://github.com/deadsnakes/issues/issues/234
+          # See https://github.com/deadsnakes/nightly for the source of the nightly
+          # builds.
+          # bionic: 18, focal: 20, jammy: 22, noble: 24
+          - ubuntu-22.04
+          - macos-latest
+          - windows-latest
         python-version:
+          # When changing this list, be sure to check the [gh] list in
+          # tox.ini so that tox will run properly. PYVERSIONS
+          # Available versions:
+          # https://github.com/actions/python-versions/blob/main/versions-manifest.json
+          # https://github.com/actions/setup-python/blob/main/docs/advanced-usage.md#available-versions-of-python-and-pypy
           - "3.9"
           - "3.10"
           - "3.11"
           - "3.12"
           - "3.13"
+        exclude:
+          # https://github.com/pypy/pypy/issues/4958
+          - os: windows
+            python-version: "pypy-3.9"
+          - os: windows-latest
+            python-version: "3.13"
+          - os: macos-latest
+            python-version: "3.13"
       fail-fast: false
     permissions:
       id-token: write
@@ -56,6 +74,7 @@ jobs:
 
     - name: "What did we get?"
       run: |
+        set -xe
         ls -alR
 
     # If using tox, install requirements for tox and tox-gh
@@ -63,5 +82,6 @@ jobs:
       env:
         DS_CONFIG_SETTINGS: ${{ steps.prepare-config-settings.outputs.ds_config_settings }}
       run: |
+        set -xe
         echo "python -m build (or tox -e build) would go here"
         # python -m build

@@ -14,7 +14,8 @@ Changelog
    Commit items for NEXT VERSION
    ..............................
 
-   - fix(action): disable cache pip
+   - fix: OS independent joinpath
+   - fix(action): cache pip maybe needs cache-dependency-path
    - fix(action): try without upload / download artifact
    - fix(action): archive name append matrix.os and version
    - fix(action): upload and download archive name must be same
