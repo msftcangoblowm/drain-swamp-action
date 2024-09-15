@@ -76,13 +76,8 @@ runs:
       shell: bash
       run: |
         set -xe
-        python gh_joinpath.py --name="TO_TOML" "src" "to_toml.py"
-        python gh_joinpath.py --name="MAIN_SH" "main.sh"
-
-    - name: Show paths
-      shell: bash
-      run: |
-        echo -e ${{ env.MAIN_SH }} --> ${{ env.TO_TOML }}
+        gh_joinpath.py --name="TO_TOML" "src" "to_toml.py"
+        gh_joinpath.py --name="MAIN_SH" "main.sh"
 
     - name: Set script executable -- MacOS or Linux
       if: ${{ ! startsWith(matrix.os, 'windows') }}

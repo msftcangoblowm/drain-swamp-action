@@ -14,7 +14,8 @@ Changelog
    Commit items for NEXT VERSION
    ..............................
 
-   - fix(main): no surround by single quotes
+   - fix(action): remove step show paths
+   - fix(main): no single quotes
    - fix(main): execute py script rely on hashbang
    - fix: move python setup step up top
    - fix(gh_joinpath): line seperator between lines
