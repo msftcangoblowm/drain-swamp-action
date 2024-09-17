@@ -14,6 +14,7 @@ Changelog
    Commit items for NEXT VERSION
    ..............................
 
+   - ci(show-me): replace input cache --> fetch_tags
    - fix(action): single quote Windows path
    - fix(action): specify path to gh_joinpath
 
