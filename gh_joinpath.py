@@ -63,7 +63,8 @@ def main():
     PATH_CLS = (
         PureWindowsPath if platform.system().lower() == "windows" else PurePosixPath
     )
-    GH_WORKSPACE = os.environ.get("GITHUB_WORKSPACE")
+    # GH_WORKSPACE = os.environ.get("GITHUB_WORKSPACE")
+    dir_path = os.environ.get("GITHUB_ACTION_PATH")
 
     parser = _parser()
     args = parser.parse_args()
@@ -72,7 +73,7 @@ def main():
     path_pieces = args.path_piece
 
     # Get the path of the runner file
-    path_f = PATH_CLS(GH_WORKSPACE)
+    path_f = PATH_CLS(dir_path)
     for piece_path in path_pieces:
         path_f = path_f.joinpath(piece_path)
 
