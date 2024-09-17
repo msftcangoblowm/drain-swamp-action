@@ -14,6 +14,8 @@ Changelog
    Commit items for NEXT VERSION
    ..............................
 
+   - fix(action): specify path to gh_joinpath
+
 .. scriv-start-here
 
 .. _changes_1-0-0:
