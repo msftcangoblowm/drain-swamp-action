@@ -14,6 +14,7 @@ Changelog
    Commit items for NEXT VERSION
    ..............................
 
+   - fix(gh_joinpath): on Windows outside repository path use Path.to_posix
    - fix(gh_joinpath): use GITHUB_ACTION_PATH not GITHUB_WORKSPACE
    - ci(show-me): replace input cache --> fetch_tags
    - fix(action): single quote Windows path
