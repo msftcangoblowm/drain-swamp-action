@@ -97,34 +97,24 @@ runs:
         echo -e 'temp folder: ${{ runner.temp }} This path is available in environment variable, DS_CONFIG_SETTINGS'
         mkdir -p ${{ runner.temp }} ||:
 
-    - id: outcome_win
-      if: startsWith(matrix.os, 'windows')
+    - id: outcome
       name: Prepare build backend plugin parameters
       env:
         # See https://github.com/actions/runner/issues/665
         # https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/accessing-contextual-information-about-workflow-runs#example-usage-of-the-runner-context
-        DS_CONFIG_SETTINGS: ${{ runner.temp }}\\${{ inputs.toml_file_name }}
         INPUT_PLUGIN_PARAMETERS: ${{ inputs.plugin_parameters }}
       shell: bash
       run: |
-        python '${{ env.TO_TOML }}'
-
-    - id: outcome_other
-      if: ${{ ! startsWith(matrix.os, 'windows') }}
-      name: Prepare build backend plugin parameters
-      env:
-        # See https://github.com/actions/runner/issues/665
-        # https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/accessing-contextual-information-about-workflow-runs#example-usage-of-the-runner-context
-        DS_CONFIG_SETTINGS: ${{ runner.temp }}/${{ inputs.toml_file_name }}
-        INPUT_PLUGIN_PARAMETERS: ${{ inputs.plugin_parameters }}
-      shell: bash
-      run: |
-        python ${{ env.TO_TOML }}
+        is_not_win=${{ ! startsWith(matrix.os, 'windows') }}
+        if [[ $is_not_win -eq 0 ]]; then
+            python ${{ env.TO_TOML }} ${{ runner.temp }}/${{ inputs.toml_file_name }}
+        else
+            python '${{ env.TO_TOML }}' '${{ runner.temp }}\\${{ inputs.toml_file_name }}'
+        fi
 
     - name: Show output
-      if: ${{ ! startsWith(matrix.os, 'windows') }}
       env:
-        DS_CONFIG_SETTINGS: ${{ steps.outcome_other.outputs.ds_config_settings }}
+        DS_CONFIG_SETTINGS: ${{ steps.outcome.outputs.ds_config_settings }}
       shell: bash
       run: |
         set -xe

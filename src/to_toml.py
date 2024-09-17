@@ -132,7 +132,7 @@ def parse_as_dict(input_text):
     return d_ret
 
 
-def main():
+def main(argv):
     """Script entrypoint
 
     Produces a config_settings TOML file. Environment variable contains
@@ -150,20 +150,20 @@ def main():
 
 
     """
-    toml_path = os.environ.get(ENV_TOML_PATH, None)
     str_json = os.environ.get("INPUT_PLUGIN_PARAMETERS", None)
     summary_file_path = Path(os.environ["GITHUB_STEP_SUMMARY"])
 
-    if toml_path is None or str_json is None:
+    argv_count = len(argv) != 2
+    if argv_count or str_json is None:
         with summary_file_path.open(mode=FILE_APPEND_MODE) as summary_file:
             msg_exc = (
-                "These environment fields are required: "
-                "DS_CONFIG_SETTINGS and INPUT_PLUGIN_PARAMETERS"
+                "required environment field INPUT_PLUGIN_PARAMETERS and "
+                "temp file path as positional arg"
             )
             write_lines_to_streams(msg_exc, (sys.stderr, summary_file))
             return 1
     else:  # pragma: no cover
-        path_toml = Path(toml_path)
+        path_toml = Path(argv[1])
 
     try:
         d_params = parse_as_dict(str_json)
@@ -195,10 +195,10 @@ def main():
         toml_contents += f"""{k!s} = '{v!s}'{LINE_SEPERATOR}"""
     path_toml.write_text(toml_contents)
 
-    # Make path available as ``output.ds_config_settings``
+    # Make path available as ``steps.[step id].outputs.ds_config_settings``
     set_final_result_outputs(path_toml)
 
 
 if __name__ == "__main__":
     """Process shield."""
-    sys.exit(main())
+    sys.exit(main(sys.argv))
