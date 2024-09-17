@@ -74,7 +74,7 @@ runs:
       if: startsWith(matrix.os, 'windows')
       shell: bash
       run: |
-        python ${{ github.action_path }}\\gh_joinpath.py --name="TO_TOML" "src" "to_toml.py"
+        python '${{ github.action_path }}\gh_joinpath.py' --name="TO_TOML" "src" "to_toml.py"
 
     - name: Set script executable -- MacOS or Linux
       if: ${{ ! startsWith(matrix.os, 'windows') }}

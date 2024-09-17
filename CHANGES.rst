@@ -14,6 +14,7 @@ Changelog
    Commit items for NEXT VERSION
    ..............................
 
+   - fix(action): single quote Windows path
    - fix(action): specify path to gh_joinpath
 
 .. scriv-start-here
