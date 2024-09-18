@@ -36,12 +36,6 @@ inputs:
     required: false
     default: '3.10'
 
-outputs:
-  ds_config_settings:
-    description: >-
-      environment variable containing path to config_settings toml file
-    value: ${{ steps.outcome.outputs.ds_config_settings }}
-
 runs:
   using: "composite"
   steps:
@@ -122,12 +116,9 @@ runs:
         esac
 
     - name: Show output
-      env:
-        DS_CONFIG_SETTINGS: '${{ steps.outcome.outputs.ds_config_settings }}'
       shell: bash
       run: |
         set -xe
-        echo 'steps.outcome.outputs.ds_config_settings ${{ steps.outcome.outputs.ds_config_settings }}'
         echo 'DS_CONFIG_SETTINGS contains path: ${{ env.DS_CONFIG_SETTINGS }}'
         cat '${{ env.DS_CONFIG_SETTINGS }}'
 
@@ -137,7 +128,7 @@ runs:
       uses: actions/upload-artifact@v4.4.0
       with:
           name: config-settings-${{ matrix.os }}-${{ inputs.python_version }}
-          path: ${{ steps.outcome.outputs.ds_config_settings }}
+          path: ${{ env.DS_CONFIG_SETTINGS }}
           retention-days: 1
           if-no-files-found: error
 

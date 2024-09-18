@@ -42,12 +42,6 @@ To produce a valid TOML file, project.name and project.version are required.
 
    open write mode, append to file
 
-.. py:data:: OUTPUT_TOML_PATH
-   :type: str
-   :value: "ds_config_settings"
-
-   output containing toml path
-
 """
 import json
 import os
@@ -61,7 +55,8 @@ SECTION_NAME = "config-settings"
 LINE_SEPERATOR = "\n"
 ENV_TOML_PATH = "DS_CONFIG_SETTINGS"
 FILE_APPEND_MODE = "a"
-OUTPUT_TOML_PATH = "ds_config_settings"
+# steps.outcome.outputs.ds_config_settings. Really want env variable not an output
+# OUTPUT_TOML_PATH = "ds_config_settings"
 
 
 def write_lines_to_streams(lines, streams):
@@ -78,7 +73,7 @@ def write_lines_to_streams(lines, streams):
         stream.flush()
 
 
-def set_gha_output(name, value):
+def set_gha_out(name, value, target="GITHUB_OUTPUT"):
     """Set an action output using an environment file.
 
     :param name: Output name. Will be available as ``output.[name]``
@@ -93,7 +88,7 @@ def set_gha_output(name, value):
        `GITHUB_OUTPUT docs <https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#setting-an-output-parameter>`_
 
     """
-    outputs_file_path = Path(os.environ["GITHUB_OUTPUT"])
+    outputs_file_path = Path(os.environ[target])
     with outputs_file_path.open(mode=FILE_APPEND_MODE) as outputs_file:
         write_lines_to_streams((f"{name}={value}",), (outputs_file,))
 
@@ -105,7 +100,10 @@ def set_final_result_outputs(path_toml):
     :type: pathlib.Path
     """
     # Make path available as ``output.ds_config_settings``
-    set_gha_output(name=OUTPUT_TOML_PATH, value=str(path_toml))
+    # set_gha_out(name=OUTPUT_TOML_PATH, value=str(path_toml))
+
+    # set environment variable, DS_CONFIG_SETTINGS
+    set_gha_out(name=ENV_TOML_PATH, value=str(path_toml), target="GITHUB_ENV")
 
 
 def parse_as_dict(input_text):
@@ -194,6 +192,8 @@ def main(argv):
         # does not support bool or int or float. Pass those as str
         toml_contents += f"""{k!s} = '{v!s}'{LINE_SEPERATOR}"""
     path_toml.write_text(toml_contents)
+
+    # export to GITHUB_ENV
 
     # Make path available as ``steps.[step id].outputs.ds_config_settings``
     set_final_result_outputs(path_toml)
