@@ -14,6 +14,7 @@ Changelog
    Commit items for NEXT VERSION
    ..............................
 
+   - fix: improve showing state before upload and after download
    - ci(show-me): download artifact check contents
    - fix(action): fix bash boolean evaluation. case not if
    - fix(gh_joinpath): argparse.parse_known_args returns a tuple

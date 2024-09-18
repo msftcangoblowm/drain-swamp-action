@@ -82,6 +82,7 @@ jobs:
     - name: "What did we get?"
       run: |
         set -xe
+        ls -al '${{ runner.temp }}'
         is_not_win=${{ ! startsWith(matrix.os, 'windows') }}
         config_settings_name="config-settings-${{ matrix.os }}-${{ matrix.python-version }}"
         case $is_not_win in
@@ -92,7 +93,6 @@ jobs:
                     cat '$path_f'
                     ;;
         esac
-        ls -al '${{ runner.temp }}'
 
     # If using tox, install requirements for tox and tox-gh
     - name: "Build package"

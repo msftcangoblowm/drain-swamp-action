@@ -112,14 +112,24 @@ runs:
         is_not_win=${{ ! startsWith(matrix.os, 'windows') }}
         case $is_not_win in
           (true)    path_f=${{ runner.temp }}/${{ inputs.toml_file_name }}
-                    python '${{ env.TO_TOML }}' $path_f
+                    python '${{ env.TO_TOML }}' ${path_f}
                     ;;
           (false)   path_f='${{ runner.temp }}\\${{ inputs.toml_file_name }}'
-                    python '${{ env.TO_TOML }}' '$path_f'
+                    python '${{ env.TO_TOML }}' '${path_f}'
                     ;;
           *)        echo "Not a boolean"
                     ;;
         esac
+
+    - name: Show output
+      env:
+        DS_CONFIG_SETTINGS: '${{ steps.outcome.outputs.ds_config_settings }}'
+      shell: bash
+      run: |
+        set -xe
+        echo 'steps.outcome.outputs.ds_config_settings ${{ steps.outcome.outputs.ds_config_settings }}'
+        echo 'DS_CONFIG_SETTINGS contains path: ${{ env.DS_CONFIG_SETTINGS }}'
+        cat '${{ env.DS_CONFIG_SETTINGS }}'
 
     # https://stackoverflow.com/questions/57498605/github-actions-share-workspace-artifacts-between-jobs
     # https://github.com/actions/upload-artifact#not-uploading-to-the-same-artifact
@@ -130,14 +140,5 @@ runs:
           path: ${{ steps.outcome.outputs.ds_config_settings }}
           retention-days: 1
           if-no-files-found: error
-
-    - name: Show output
-      env:
-        DS_CONFIG_SETTINGS: ${{ steps.outcome.outputs.ds_config_settings }}
-      shell: bash
-      run: |
-        set -xe
-        echo DS_CONFIG_SETTINGS contains path: ${{ env.DS_CONFIG_SETTINGS }}
-        cat ${{ env.DS_CONFIG_SETTINGS }}
 
 ...
