@@ -81,17 +81,21 @@ jobs:
     - name: "What did we get? -- Windows"
       if: startsWith(matrix.os, 'windows')
       env:
-        DS_CONFIG_SETTINGS: '${{ runner.temp }}\${{ steps.outcome.inputs.toml_file_name }}'
+        DS_CONFIG_SETTINGS: '${{ runner.temp }}\setuptools-build.toml'
       run: |
         set -xe
         ls -al '${{ runner.temp }}'
-        cat ${{ env.DS_CONFIG_SETTINGS }}
+        if [[ -f "${{ env.DS_CONFIG_SETTINGS }}" ]]; then
+            cat ${{ env.DS_CONFIG_SETTINGS }}
+        fi
 
     - name: "What did we get? -- Linux and MacOS"
       if: ${{ ! startsWith(matrix.os, 'windows') }}
       env:
-        DS_CONFIG_SETTINGS: ${{ runner.temp }}/${{ steps.outcome.inputs.toml_file_name }}
+        DS_CONFIG_SETTINGS: ${{ runner.temp }}/setuptools-build.toml
       run: |
         set -xe
         ls -al '${{ runner.temp }}'
-        cat ${{ env.DS_CONFIG_SETTINGS }}
+        if [[ -f "${{ env.DS_CONFIG_SETTINGS }}" ]]; then
+            cat ${{ env.DS_CONFIG_SETTINGS }}
+        fi
