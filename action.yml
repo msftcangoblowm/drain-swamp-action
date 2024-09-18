@@ -70,10 +70,10 @@ runs:
         set -xe
         path_dir=$(git config safe.directory)
         is_not_win=${{ ! startsWith(matrix.os, 'windows') }}
-        if [[ $is_not_win -eq 0 ]]; then
-        python ${{ github.action_path }}/gh_joinpath.py --name="TO_TOML" "src" "to_toml.py"
+        if [[ ! $is_not_win ]]; then
+            python '${{ github.action_path }}\gh_joinpath.py' --name="TO_TOML" "src" "to_toml.py"
         else
-        python '${{ github.action_path }}\gh_joinpath.py' --name="TO_TOML" "src" "to_toml.py"
+            python ${{ github.action_path }}/gh_joinpath.py --name="TO_TOML" "src" "to_toml.py"
         fi
 
     - name: Set script executable
@@ -82,10 +82,10 @@ runs:
         set -xe
         is_not_win=${{ ! startsWith(matrix.os, 'windows') }}
         echo "is_not_win: $is_not_win"
-        if [[ $is_not_win -eq 0 ]]; then
-        chmod +x ${{ env.TO_TOML }}
-        # else
-        # git update-index --chmod=+x '${{ env.TO_TOML }}'
+        if [[ $is_not_win ]]; then
+            chmod +x ${{ env.TO_TOML }}
+            # else
+            # git update-index --chmod=+x '${{ env.TO_TOML }}'
         fi
 
     - name: Prepare temp folder
@@ -104,19 +104,20 @@ runs:
       shell: bash
       run: |
         is_not_win=${{ ! startsWith(matrix.os, 'windows') }}
-        if [[ $is_not_win -eq 0 ]]; then
-            path_f=${{ runner.temp }}/${{ inputs.toml_file_name }}
-        else
+        if [[ ! $is_not_win ]]; then
             path_f='${{ runner.temp }}\\${{ inputs.toml_file_name }}'
+            python '${{ env.TO_TOML }}' '$path_f'
+        else
+            path_f=${{ runner.temp }}/${{ inputs.toml_file_name }}
+            python '${{ env.TO_TOML }}' $path_f
         fi
-        python '${{ env.TO_TOML }}' '$path_f'
 
     # https://stackoverflow.com/questions/57498605/github-actions-share-workspace-artifacts-between-jobs
     # https://github.com/actions/upload-artifact#not-uploading-to-the-same-artifact
     - name: upload artifact
       uses: actions/upload-artifact@v4.4.0
       with:
-          name: config-settings-${{ matrix.os }}-${{ matrix.version }}
+          name: config-settings-${{ matrix.os }}-${{ inputs.python_version }}
           path: ${{ steps.outcome.outputs.ds_config_settings }}
           retention-days: 1
           if-no-files-found: error

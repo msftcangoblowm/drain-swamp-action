@@ -14,6 +14,7 @@ Changelog
    Commit items for NEXT VERSION
    ..............................
 
+   - fix: archive id missing python-version
    - fix(gh_joinpath): add option --dir
    - fix: on Windows try env.GITHUB_WORKSPACE
    - fix(action): consolidate output onto one id
