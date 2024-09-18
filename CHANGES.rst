@@ -14,6 +14,7 @@ Changelog
    Commit items for NEXT VERSION
    ..............................
 
+   - ci(show-me): download artifact check contents
    - fix(action): fix bash boolean evaluation. case not if
    - fix(gh_joinpath): argparse.parse_known_args returns a tuple
    - fix(gh_joinpath): parse --dir type pathlib.PurePath

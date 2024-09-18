@@ -72,10 +72,26 @@ jobs:
         fetch_tags: true
         python_version: "${{ matrix.python-version }}"
 
+    - name: "Download artifact"
+      uses: actions/download-artifact@v4
+      with:
+        name: config-settings-${{ matrix.os }}-${{ matrix.python-version }}
+        path: '${{ runner.temp }}'
+
+    # Need to GITHUB_OUTPUT on this step. So have ds_config_setting path
     - name: "What did we get?"
       run: |
         set -xe
-        echo "steps.outcome.outputs.ds_config_settings ${{ steps.outcome.outputs.ds_config_settings }}"
+        is_not_win=${{ ! startsWith(matrix.os, 'windows') }}
+        config_settings_name="config-settings-${{ matrix.os }}-${{ matrix.python-version }}"
+        case $is_not_win in
+          (true)    path_f=${{ runner.temp }}/$config_settings_name
+                    cat $path_f
+                    ;;
+          (false)   path_f='${{ runner.temp }}\$config_settings_name'
+                    cat '$path_f'
+                    ;;
+        esac
         ls -al '${{ runner.temp }}'
 
     # If using tox, install requirements for tox and tox-gh
