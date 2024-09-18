@@ -81,7 +81,7 @@ jobs:
     - name: "What did we get? -- Windows"
       if: startsWith(matrix.os, 'windows')
       env:
-        DS_CONFIG_SETTINGS: '${{ runner.temp }}\${{ steps.prepare-config-settings.inputs.toml_file_name }}'
+        DS_CONFIG_SETTINGS: '${{ runner.temp }}\${{ steps.outcome.inputs.toml_file_name }}'
       run: |
         set -xe
         ls -al '${{ runner.temp }}'
@@ -90,7 +90,7 @@ jobs:
     - name: "What did we get? -- Linux and MacOS"
       if: ${{ ! startsWith(matrix.os, 'windows') }}
       env:
-        DS_CONFIG_SETTINGS: ${{ runner.temp }}/${{ steps.prepare-config-settings.inputs.toml_file_name }}
+        DS_CONFIG_SETTINGS: ${{ runner.temp }}/${{ steps.outcome.inputs.toml_file_name }}
       run: |
         set -xe
         ls -al '${{ runner.temp }}'
