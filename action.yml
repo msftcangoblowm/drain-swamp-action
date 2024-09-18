@@ -64,31 +64,29 @@ runs:
         #   requirements.txt
 
     # Writes to GITHUB_ENV file. In other steps env.TO_TOML and env.MAIN_SH will be available
-    - name: Set paths -- MacOS or Linux
-      if: ${{ ! startsWith(matrix.os, 'windows') }}
-      shell: bash
-      run: |
-        python ${{ github.action_path }}/gh_joinpath.py --name="TO_TOML" "src" "to_toml.py"
-
-    - name: Set paths -- Windows
-      if: startsWith(matrix.os, 'windows')
-      shell: bash
-      run: |
-        python '${{ github.action_path }}\gh_joinpath.py' --name="TO_TOML" "src" "to_toml.py"
-
-    - name: Set script executable -- MacOS or Linux
-      if: ${{ ! startsWith(matrix.os, 'windows') }}
+    - name: Set paths
       shell: bash
       run: |
         set -xe
+        path_dir=$(git config safe.directory)
+        is_not_win=${{ ! startsWith(matrix.os, 'windows') }}
+        if [[ $is_not_win -eq 0 ]]; then
+        python ${{ github.action_path }}/gh_joinpath.py --dir=$path_dir --name="TO_TOML" "src" "to_toml.py"
+        else
+        python '${{ github.action_path }}\gh_joinpath.py' --dir='$path_dir' --name="TO_TOML" "src" "to_toml.py"
+        fi
+
+    - name: Set script executable
+      shell: bash
+      run: |
+        set -xe
+        is_not_win=${{ ! startsWith(matrix.os, 'windows') }}
+        echo "is_not_win: $is_not_win"
+        if [[ $is_not_win -eq 0 ]]; then
         chmod +x ${{ env.TO_TOML }}
-
-    - name: Set script executable -- Windows
-      if: startsWith(matrix.os, 'windows')
-      shell: bash
-      run: |
-        set -xe
-        git update-index --chmod=+x '${{ env.TO_TOML }}'
+        # else
+        # git update-index --chmod=+x '${{ env.TO_TOML }}'
+        fi
 
     - name: Prepare temp folder
       shell: bash
@@ -107,10 +105,21 @@ runs:
       run: |
         is_not_win=${{ ! startsWith(matrix.os, 'windows') }}
         if [[ $is_not_win -eq 0 ]]; then
-            python ${{ env.TO_TOML }} ${{ runner.temp }}/${{ inputs.toml_file_name }}
+            path_f=${{ runner.temp }}/${{ inputs.toml_file_name }}
         else
-            python '${{ env.TO_TOML }}' '${{ runner.temp }}\\${{ inputs.toml_file_name }}'
+            path_f='${{ runner.temp }}\\${{ inputs.toml_file_name }}'
         fi
+        python '${{ env.TO_TOML }}' '$path_f'
+
+    # https://stackoverflow.com/questions/57498605/github-actions-share-workspace-artifacts-between-jobs
+    # https://github.com/actions/upload-artifact#not-uploading-to-the-same-artifact
+    - name: upload artifact
+      uses: actions/upload-artifact@v4.4.0
+      with:
+          name: config-settings-${{ matrix.os }}-${{ matrix.version }}
+          path: ${{ steps.outcome.outputs.ds_config_settings }}
+          retention-days: 1
+          if-no-files-found: error
 
     - name: Show output
       env:

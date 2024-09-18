@@ -75,12 +75,13 @@ jobs:
     - name: "What did we get?"
       run: |
         set -xe
-        ls -alR
+        echo "steps.outcome.outputs.ds_config_settings ${{ steps.outcome.outputs.ds_config_settings }}"
+        ls -al '${{ runner.temp }}'
 
     # If using tox, install requirements for tox and tox-gh
     - name: "Build package"
       env:
-        DS_CONFIG_SETTINGS: ${{ steps.prepare-config-settings.outputs.ds_config_settings }}
+        DS_CONFIG_SETTINGS: ${{ steps.outcome.outputs.ds_config_settings }}
       run: |
         set -xe
         echo "python -m build (or tox -e build) would go here"

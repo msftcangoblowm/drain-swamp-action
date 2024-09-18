@@ -59,21 +59,40 @@ def _parser():
 
 
 def main():
-    """Write key/value pair to GITHUB_ENV file."""
+    """Write key/value pair to GITHUB_ENV file.
+
+    Inputs
+
+    ``--dir`` -- :code:`git config safe.directory` fallback is GITHUB_ACTION_PATH
+
+    ``--name`` -- output environment variable name
+
+    ``path pieces`` -- path components that will be joined
+
+    Outputs
+
+    ``env.[args.name]`` -- Environment variable that will contain the path
+
+    """
     PATH_CLS = (
         PureWindowsPath if platform.system().lower() == "windows" else PurePosixPath
     )
     # GH_WORKSPACE = os.environ.get("GITHUB_WORKSPACE")
-    dir_path = os.environ.get("GITHUB_ACTION_PATH")
 
     parser = _parser()
     args = parser.parse_args()
 
     env_var_name = args.name
     path_pieces = args.path_piece
+    if hasattr(args, "dir") and len(args.dir) != 0:
+        # Get safe directory folder, ``git config safe.directory``
+        dir_path = args.dir
+    else:
+        # Linux and MacOS ok. Windows ng
+        dir_path = os.environ.get("GITHUB_ACTION_PATH")
+    path_f = PATH_CLS(dir_path)
 
     # Get the path of the runner file
-    path_f = PATH_CLS(dir_path)
     for piece_path in path_pieces:
         path_f = path_f.joinpath(piece_path)
 
