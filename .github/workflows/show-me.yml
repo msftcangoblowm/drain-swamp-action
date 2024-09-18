@@ -78,24 +78,20 @@ jobs:
         name: config-settings-${{ matrix.os }}-${{ matrix.python-version }}
         path: '${{ runner.temp }}'
 
-    - name: "Whats in /tmp?"
-      shell: bash
-      run: |
-        set -xe
-        ls -al '${{ runner.temp }}'
-
-    - name: "Set DS_CONFIG_SETTINGS -- Windows"
+    - name: "What did we get? -- Windows"
       if: startsWith(matrix.os, 'windows')
       env:
         DS_CONFIG_SETTINGS: '${{ runner.temp }}\${{ steps.prepare-config-settings.inputs.toml_file_name }}'
+      run: |
+        set -xe
+        ls -al '${{ runner.temp }}'
+        cat ${{ env.DS_CONFIG_SETTINGS }}
 
-    - name: "Set DS_CONFIG_SETTINGS -- Linux and MacOS"
+    - name: "What did we get? -- Linux and MacOS"
       if: ${{ ! startsWith(matrix.os, 'windows') }}
       env:
         DS_CONFIG_SETTINGS: ${{ runner.temp }}/${{ steps.prepare-config-settings.inputs.toml_file_name }}
-
-    # Need to GITHUB_OUTPUT on this step. So have ds_config_setting path
-    - name: "What did we get?"
       run: |
         set -xe
+        ls -al '${{ runner.temp }}'
         cat ${{ env.DS_CONFIG_SETTINGS }}
