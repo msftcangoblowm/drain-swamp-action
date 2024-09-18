@@ -64,29 +64,35 @@ runs:
         #   requirements.txt
 
     # Writes to GITHUB_ENV file. In other steps env.TO_TOML and env.MAIN_SH will be available
+    # when evaluating boolean,  as opposed to test, this is safer and intuitive
     - name: Set paths
       shell: bash
       run: |
         set -xe
         path_dir=$(git config safe.directory)
         is_not_win=${{ ! startsWith(matrix.os, 'windows') }}
-        if [[ ! $is_not_win ]]; then
-            python '${{ github.action_path }}\gh_joinpath.py' --name="TO_TOML" "src" "to_toml.py"
-        else
-            python ${{ github.action_path }}/gh_joinpath.py --name="TO_TOML" "src" "to_toml.py"
-        fi
+        case $is_not_win in
+          (true)    python ${{ github.action_path }}/gh_joinpath.py --name="TO_TOML" "src" "to_toml.py"
+                    ;;
+          (false)   python '${{ github.action_path }}\gh_joinpath.py' --name="TO_TOML" "src" "to_toml.py"
+                    ;;
+          *)        echo "Not a boolean"
+                    ;;
+        esac
 
     - name: Set script executable
       shell: bash
       run: |
         set -xe
         is_not_win=${{ ! startsWith(matrix.os, 'windows') }}
-        echo "is_not_win: $is_not_win"
-        if [[ $is_not_win ]]; then
-            chmod +x ${{ env.TO_TOML }}
-            # else
-            # git update-index --chmod=+x '${{ env.TO_TOML }}'
-        fi
+        # git update-index --chmod=+x '${{ env.TO_TOML }}'
+        case $is_not_win in
+          (true)    chmod +x ${{ env.TO_TOML }}
+                    ;;
+          (false)   ;;
+          *)        echo "Not a boolean"
+                    ;;
+        esac
 
     - name: Prepare temp folder
       shell: bash
@@ -104,13 +110,16 @@ runs:
       shell: bash
       run: |
         is_not_win=${{ ! startsWith(matrix.os, 'windows') }}
-        if [[ ! $is_not_win ]]; then
-            path_f='${{ runner.temp }}\\${{ inputs.toml_file_name }}'
-            python '${{ env.TO_TOML }}' '$path_f'
-        else
-            path_f=${{ runner.temp }}/${{ inputs.toml_file_name }}
-            python '${{ env.TO_TOML }}' $path_f
-        fi
+        case $is_not_win in
+          (true)    path_f=${{ runner.temp }}/${{ inputs.toml_file_name }}
+                    python '${{ env.TO_TOML }}' $path_f
+                    ;;
+          (false)   path_f='${{ runner.temp }}\\${{ inputs.toml_file_name }}'
+                    python '${{ env.TO_TOML }}' '$path_f'
+                    ;;
+          *)        echo "Not a boolean"
+                    ;;
+        esac
 
     # https://stackoverflow.com/questions/57498605/github-actions-share-workspace-artifacts-between-jobs
     # https://github.com/actions/upload-artifact#not-uploading-to-the-same-artifact
