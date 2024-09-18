@@ -57,11 +57,15 @@ def _parser():
         default=DEFAULT_ENV_VAR_NAME,
     )
 
+    # Parse as pathlib.PurePath
+    is_win = platform.system().lower() == "windows"
+    PATH_CLS = PureWindowsPath if is_win else PurePosixPath
     parser.add_argument(
         "--dir",
         nargs="?",
         const=os.environ.get("GITHUB_WORKSPACE"),
         default=os.environ.get("GITHUB_WORKSPACE"),
+        type=PATH_CLS,
     )
 
     return parser
@@ -83,16 +87,14 @@ def main():
     ``env.[args.name]`` -- Environment variable that will contain the path
 
     """
-    is_win = platform.system().lower() == "windows"
-    PATH_CLS = PureWindowsPath if is_win else PurePosixPath
 
     parser = _parser()
-    args = parser.parse_args()
+    args = parser.parse_known_args()
 
     env_var_name = args.name
     path_pieces = args.path_piece
     # dir_path = os.environ.get("GITHUB_ACTION_PATH")
-    path_f = PATH_CLS(args.dir)
+    path_f = args.dir
 
     # Get the path of the runner file
     for piece_path in path_pieces:
