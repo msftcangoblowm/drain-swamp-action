@@ -86,7 +86,7 @@ jobs:
         set -xe
         ls -al '${{ runner.temp }}'
         if [[ -f "${{ env.DS_CONFIG_SETTINGS }}" ]]; then
-            cat ${{ env.DS_CONFIG_SETTINGS }}
+            cat '${{ env.DS_CONFIG_SETTINGS }}'
         fi
 
     - name: "What did we get? -- Linux and MacOS"
