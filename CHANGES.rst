@@ -14,6 +14,7 @@ Changelog
    Commit items for NEXT VERSION
    ..............................
 
+   - fix(gh_joinpath): argparse.parse_known_args returns a tuple
    - fix(gh_joinpath): parse --dir type pathlib.PurePath
    - fix: archive id missing python-version
    - fix(gh_joinpath): add option --dir

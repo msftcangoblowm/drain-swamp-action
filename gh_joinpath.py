@@ -89,7 +89,7 @@ def main():
     """
 
     parser = _parser()
-    args = parser.parse_known_args()
+    args, unknown_args = parser.parse_known_args()
 
     env_var_name = args.name
     path_pieces = args.path_piece
