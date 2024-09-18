@@ -112,10 +112,10 @@ runs:
         is_not_win=${{ ! startsWith(matrix.os, 'windows') }}
         case $is_not_win in
           (true)    path_f=${{ runner.temp }}/${{ inputs.toml_file_name }}
-                    python '${{ env.TO_TOML }}' ${path_f}
+                    python '${{ env.TO_TOML }}' $path_f
                     ;;
           (false)   path_f='${{ runner.temp }}\\${{ inputs.toml_file_name }}'
-                    python '${{ env.TO_TOML }}' '${path_f}'
+                    python '${{ env.TO_TOML }}' $path_f
                     ;;
           *)        echo "Not a boolean"
                     ;;

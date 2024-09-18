@@ -78,27 +78,24 @@ jobs:
         name: config-settings-${{ matrix.os }}-${{ matrix.python-version }}
         path: '${{ runner.temp }}'
 
+    - name: "Whats in /tmp?"
+      shell: bash
+      run: |
+        set -xe
+        ls -al '${{ runner.temp }}'
+
+    - name: "Set DS_CONFIG_SETTINGS -- Windows"
+      if: startsWith(matrix.os, 'windows')
+      env:
+        DS_CONFIG_SETTINGS: '${{ runner.temp }}\${{ steps.prepare-config-settings.inputs.toml_file_name }}'
+
+    - name: "Set DS_CONFIG_SETTINGS -- Linux and MacOS"
+      if: ${{ ! startsWith(matrix.os, 'windows') }}
+      env:
+        DS_CONFIG_SETTINGS: ${{ runner.temp }}/${{ steps.prepare-config-settings.inputs.toml_file_name }}
+
     # Need to GITHUB_OUTPUT on this step. So have ds_config_setting path
     - name: "What did we get?"
       run: |
         set -xe
-        ls -al '${{ runner.temp }}'
-        is_not_win=${{ ! startsWith(matrix.os, 'windows') }}
-        config_settings_name="config-settings-${{ matrix.os }}-${{ matrix.python-version }}"
-        case $is_not_win in
-          (true)    path_f=${{ runner.temp }}/$config_settings_name
-                    cat $path_f
-                    ;;
-          (false)   path_f='${{ runner.temp }}\$config_settings_name'
-                    cat '$path_f'
-                    ;;
-        esac
-
-    # If using tox, install requirements for tox and tox-gh
-    - name: "Build package"
-      env:
-        DS_CONFIG_SETTINGS: ${{ steps.outcome.outputs.ds_config_settings }}
-      run: |
-        set -xe
-        echo "python -m build (or tox -e build) would go here"
-        # python -m build
+        cat ${{ env.DS_CONFIG_SETTINGS }}
