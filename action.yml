@@ -71,9 +71,9 @@ runs:
         path_dir=$(git config safe.directory)
         is_not_win=${{ ! startsWith(matrix.os, 'windows') }}
         if [[ $is_not_win -eq 0 ]]; then
-        python ${{ github.action_path }}/gh_joinpath.py --dir=${{ github.workspace }} --name="TO_TOML" "src" "to_toml.py"
+        python ${{ github.action_path }}/gh_joinpath.py --name="TO_TOML" "src" "to_toml.py"
         else
-        python '${{ github.action_path }}\gh_joinpath.py' --dir='${{ github.workspace }}' --name="TO_TOML" "src" "to_toml.py"
+        python '${{ github.action_path }}\gh_joinpath.py' --name="TO_TOML" "src" "to_toml.py"
         fi
 
     - name: Set script executable

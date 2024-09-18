@@ -14,6 +14,7 @@ Changelog
    Commit items for NEXT VERSION
    ..............................
 
+   - fix(gh_joinpath): add option --dir
    - fix: on Windows try env.GITHUB_WORKSPACE
    - fix(action): consolidate output onto one id
    - fix(gh_joinpath): on Windows outside repository path use Path.as_posix

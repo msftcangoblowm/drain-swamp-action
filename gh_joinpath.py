@@ -49,12 +49,21 @@ def _parser():
         "path_piece",
         nargs="+",
     )
+
     parser.add_argument(
         "--name",
         nargs="?",
         const=DEFAULT_ENV_VAR_NAME,
         default=DEFAULT_ENV_VAR_NAME,
     )
+
+    parser.add_argument(
+        "--dir",
+        nargs="?",
+        const=os.environ.get("GITHUB_WORKSPACE"),
+        default=os.environ.get("GITHUB_WORKSPACE"),
+    )
+
     return parser
 
 
@@ -74,23 +83,16 @@ def main():
     ``env.[args.name]`` -- Environment variable that will contain the path
 
     """
-    PATH_CLS = (
-        PureWindowsPath if platform.system().lower() == "windows" else PurePosixPath
-    )
-    # GH_WORKSPACE = os.environ.get("GITHUB_WORKSPACE")
+    is_win = platform.system().lower() == "windows"
+    PATH_CLS = PureWindowsPath if is_win else PurePosixPath
 
     parser = _parser()
     args = parser.parse_args()
 
     env_var_name = args.name
     path_pieces = args.path_piece
-    if hasattr(args, "dir") and len(args.dir) != 0:
-        # Get safe directory folder, ``git config safe.directory``
-        dir_path = args.dir
-    else:
-        # Linux and MacOS ok. Windows ng
-        dir_path = os.environ.get("GITHUB_ACTION_PATH")
-    path_f = PATH_CLS(dir_path)
+    # dir_path = os.environ.get("GITHUB_ACTION_PATH")
+    path_f = PATH_CLS(args.dir)
 
     # Get the path of the runner file
     for piece_path in path_pieces:
