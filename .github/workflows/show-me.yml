@@ -78,24 +78,16 @@ jobs:
         name: config-settings-${{ matrix.os }}-${{ matrix.python-version }}
         path: '${{ runner.temp }}'
 
-    - name: "What did we get? -- Windows"
+    - name: "Assert env.DS_CONFIG_SETTINGS and show file contents -- Windows"
       if: startsWith(matrix.os, 'windows')
-      env:
-        DS_CONFIG_SETTINGS: '${{ runner.temp }}\setuptools-build.toml'
       run: |
         set -xe
         ls -al '${{ runner.temp }}'
-        if [[ -f "${{ env.DS_CONFIG_SETTINGS }}" ]]; then
-            cat '${{ env.DS_CONFIG_SETTINGS }}'
-        fi
+        [[ -f "${{ env.DS_CONFIG_SETTINGS }}" ]] && cat '${{ env.DS_CONFIG_SETTINGS }}' || exit 1
 
-    - name: "What did we get? -- Linux and MacOS"
+    - name: "Assert env.DS_CONFIG_SETTINGS and show file contents -- Linux and MacOS"
       if: ${{ ! startsWith(matrix.os, 'windows') }}
-      env:
-        DS_CONFIG_SETTINGS: ${{ runner.temp }}/setuptools-build.toml
       run: |
         set -xe
         ls -al '${{ runner.temp }}'
-        if [[ -f "${{ env.DS_CONFIG_SETTINGS }}" ]]; then
-            cat ${{ env.DS_CONFIG_SETTINGS }}
-        fi
+        [[ -f "${{ env.DS_CONFIG_SETTINGS }}" ]] && cat ${{ env.DS_CONFIG_SETTINGS }} || exit 1

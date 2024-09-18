@@ -14,6 +14,7 @@ Changelog
    Commit items for NEXT VERSION
    ..............................
 
+   - fix(show-me): assert env.DS_CONFIG_SETTINGS and show file contents
    - fix: remove output ds_config_settings. Prefer env.DS_CONFIG_SETTINGS
    - fix: download artifact then set DS_CONFIG_SETTINGS
    - fix: improve showing state before upload and after download
