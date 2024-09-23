@@ -14,14 +14,14 @@ uses this technique. So could your build backend.
 :code:`python -m build` executes build backends within a subprocess. And
 does not pass thru the config_settings.
 
-To customize the build process really needs those config settings.
+To customize the build process, config settings are absolutely needed.
 
 Definitions
 ------------
 
 - ``DS_CONFIG_SETTINGS``
 
-Environment variable holding absolute path to a valid TOML file
+Environment variable with absolute path to a valid TOML file
 
 - a valid TOML file
 
@@ -34,25 +34,22 @@ Python build backend packages also need to build their package.
 
 Your package most likely is not a build backend package.
 
-For python build backend packages only, to customize the build process,
-a python script is created and placed within the package base folder
-or a subfolder. Setuptools executes this script.
+**to be consistent**
 
-Ironically, ``config_settings`` are passed into the Python script.
-
-Even so, ``drain-swamp-action`` prefers to have one interface; treat
-both the same: custom build backends and just using a build backend.
+Eventhough ``config_settings`` is passed into the custom build
+backend Python script, all packages should use the same
+interface, ``drain-swamp-action``.
 
 Workflow
 ---------
 
 The build backend should:
 
-- check for ``DS_CONFIG_SETTINGS`` and get absolute TOML file path
-  e.g. ``/tmp/setuptools-build.toml``
+- check for ``DS_CONFIG_SETTINGS`` which contains absolute TOML file path
+  e.g. ``'/[tmp folder]/setuptools-build.toml'``
 - read the TOML file
 - parse (``config_settings``) into a mapping
-- use ``config_settings`` mapping to customize the build process
+- use the ``config_settings`` mapping to customize the build process
 
 tl;dr; skip to github-workflow_
 
@@ -189,8 +186,6 @@ IO
    | Default \'setuptools-build.toml\'"
    "checkout", "| ``true`` to checkout repo. Let us checkout the repo, one less thing to do.
    | Default true"
-   "fetch_tags", "| Checkout alone does not get git tags. ``true`` to fetch git tags info.
-   | Default false"
    "python_version", "| Version of python to use.
    | Default \'3.10\'"
 
@@ -216,8 +211,12 @@ along with the TOML file
 
    On windows, value (an absolute path) needs single quotes.
 
-   if: ${{ ! startsWith(matrix.os, 'windows') }}
-   if: startsWith(matrix.os, 'windows')
+   In bash, use ``case in esac`` to handle windows and not windows cases.
+
+   These produce boolean, so don't use ``if; then else fi``
+
+   ${{ ! startsWith(matrix.os, 'windows') }}
+   startsWith(matrix.os, 'windows')
 
 .. _drain-swamp-action-examples:
 
@@ -239,7 +238,6 @@ Basic example
      with:
         plugin_parameters: '{"set-lock": "1", "kind": "current"}'
         checkout: true
-        fetch_tags: true
         python_version: '3.10'
 
    - name: "What did we get?"

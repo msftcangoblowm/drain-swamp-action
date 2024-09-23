@@ -20,11 +20,6 @@ inputs:
   toml_file_name:
     required: false
     default: 'setuptools-build.toml'
-  fetch_tags:
-    description: >-
-      Fetch git tags
-    required: false
-    default: false
   checkout:
     description: >-
       Whether to automatically checkout the repository, if false, user need to do it byself
@@ -41,15 +36,9 @@ runs:
   steps:
     - name: Checkout
       uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
-      if: ${{ inputs.checkout == 'true' && inputs.fetch_tags == 'true' }}
+      if: ${{ inputs.checkout == 'true' }}
       with:
         fetch-depth: 0
-        repository: 'msftcangoblowm/drain-swamp-action'
-        ref: 'v1'
-    - name: Checkout
-      uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
-      if: ${{ inputs.checkout == 'true' && inputs.fetch_tags == 'false' }}
-      with:
         repository: 'msftcangoblowm/drain-swamp-action'
         ref: 'v1'
 

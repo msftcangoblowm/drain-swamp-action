@@ -8,12 +8,16 @@ Changelog
    Feature request
    .................
 
+   - add input is_arch
+
    Known regressions
    ..................
 
    Commit items for NEXT VERSION
    ..............................
 
+   - fix(action): remove input fetch_tags
+   - docs(README): remove mention of input fetch_tags
    - fix(action): specify this gha repo and branch v1
    - fix(show-me): assert env.DS_CONFIG_SETTINGS and show file contents
    - fix: remove output ds_config_settings. Prefer env.DS_CONFIG_SETTINGS
