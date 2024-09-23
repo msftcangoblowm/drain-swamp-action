@@ -16,6 +16,7 @@ Changelog
    Commit items for NEXT VERSION
    ..............................
 
+   - fix(show-me): remove input fetch_tags
    - fix(action): remove input fetch_tags
    - docs(README): remove mention of input fetch_tags
    - fix(action): specify this gha repo and branch v1

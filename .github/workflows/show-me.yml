@@ -69,7 +69,6 @@ jobs:
       with:
         plugin_parameters: '{"set-lock": "1", "kind": "current"}'
         checkout: true
-        fetch_tags: true
         python_version: "${{ matrix.python-version }}"
 
     - name: "Download artifact"
