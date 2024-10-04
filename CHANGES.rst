@@ -16,6 +16,7 @@ Changelog
    Commit items for NEXT VERSION
    ..............................
 
+   - ci: add codeql-analysis
    - ci: add dependency-review and dependabot
    - refactor(show-me): assert env.DS_CONFIG_SETTINGS into one step
    - chore: bump actions/checkout
