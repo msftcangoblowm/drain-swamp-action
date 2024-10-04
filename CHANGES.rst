@@ -16,6 +16,9 @@ Changelog
    Commit items for NEXT VERSION
    ..............................
 
+   - ci: add dependency-review and dependabot
+   - refactor(show-me): assert env.DS_CONFIG_SETTINGS into one step
+   - chore: bump actions/checkout
    - fix(show-me): remove input fetch_tags
    - fix(action): remove input fetch_tags
    - docs(README): remove mention of input fetch_tags

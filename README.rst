@@ -145,7 +145,6 @@ Github workflows can use this drain-swamp-action to simplify the process.
      with:
         plugin_parameters: '{"set-lock": "1", "kind": "current"}'
         checkout: true
-        fetch_tags: true
         python_version: '3.10'
 
 Can easily and intuitively add more build parameters to the JSON str.

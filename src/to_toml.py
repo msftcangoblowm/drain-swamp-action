@@ -80,6 +80,12 @@ def set_gha_out(name, value, target="GITHUB_OUTPUT"):
     :type name: str
     :param value: Value to set
     :type value: str
+    :param target:
+
+       Environment variable name which contains the absolute path of
+       file to write to. Either GITHUB_ENV or GITHUB_OUTPUT
+
+    :type target: str
 
     .. seealso::
 

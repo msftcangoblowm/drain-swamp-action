@@ -77,16 +77,16 @@ jobs:
         name: config-settings-${{ matrix.os }}-${{ matrix.python-version }}
         path: '${{ runner.temp }}'
 
-    - name: "Assert env.DS_CONFIG_SETTINGS and show file contents -- Windows"
-      if: startsWith(matrix.os, 'windows')
+    - name: "Assert env.DS_CONFIG_SETTINGS and show file contents"
       run: |
         set -xe
         ls -al '${{ runner.temp }}'
-        [[ -f "${{ env.DS_CONFIG_SETTINGS }}" ]] && cat '${{ env.DS_CONFIG_SETTINGS }}' || exit 1
-
-    - name: "Assert env.DS_CONFIG_SETTINGS and show file contents -- Linux and MacOS"
-      if: ${{ ! startsWith(matrix.os, 'windows') }}
-      run: |
-        set -xe
-        ls -al '${{ runner.temp }}'
-        [[ -f "${{ env.DS_CONFIG_SETTINGS }}" ]] && cat ${{ env.DS_CONFIG_SETTINGS }} || exit 1
+        is_not_win=${{ ! startsWith(matrix.os, 'windows') }}
+        case $is_not_win in
+          (true)    [[ -f "${{ env.DS_CONFIG_SETTINGS }}" ]] && cat ${{ env.DS_CONFIG_SETTINGS }} || exit 1
+                    ;;
+          (false)   [[ -f "${{ env.DS_CONFIG_SETTINGS }}" ]] && cat '${{ env.DS_CONFIG_SETTINGS }}' || exit 1
+                    ;;
+          *)        echo "Not a boolean"
+                    ;;
+        esac
