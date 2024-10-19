@@ -145,12 +145,25 @@ Github workflows can use this drain-swamp-action to simplify the process.
      with:
         plugin_parameters: '{"set-lock": "1", "kind": "current"}'
         checkout: true
-        python_version: '3.10'
+        python_version: "${{ matrix.python-version }}"
+
+   - name: "Download artifact"
+     uses: actions/download-artifact@v4.1.8
+     with:
+       name: config-settings-${{ matrix.platform || matrix.os }}-${{ matrix.python-version }}
+       path: '${{ runner.temp }}'
 
 Can easily and intuitively add more build parameters to the JSON str.
 
-After this step, execute :code:`python -m build`. This your github
-workflow should do.
+Can use either :code:`matrix.platform` or :code:`matrix.os`.
+:code:`matrix.arch` is not yet supported
+
+After this step, install requirements then :code:`python -m build`.
+
+Config settings path is available in :code:`${{ env.DS_CONFIG_SETTINGS }}`
+
+The build backend must be aware of DS_CONFIG_SETTINGS environment variable.
+Which contains the path to the TOML config settings file.
 
 Usually implemented as bash or tox.
 
@@ -214,8 +227,8 @@ along with the TOML file
 
    These produce boolean, so don't use ``if; then else fi``
 
-   ${{ ! startsWith(matrix.os, 'windows') }}
-   startsWith(matrix.os, 'windows')
+   ${{ ! startsWith(matrix.platform || matrix.os, 'windows') }}
+   startsWith(matrix.platform || matrix.os, 'windows')
 
 .. _drain-swamp-action-examples:
 

@@ -26,8 +26,8 @@ permissions:
 jobs:
   build:
     name: >-
-      ${{ matrix.python-version }} on ${{ matrix.os }}
-    runs-on: "${{ matrix.os }}"
+      ${{ matrix.python-version }} on ${{ matrix.platform || matrix.os }}
+    runs-on: "${{ matrix.platform || matrix.os }}"
     strategy:
       matrix:
         os:
@@ -74,14 +74,14 @@ jobs:
     - name: "Download artifact"
       uses: actions/download-artifact@v4
       with:
-        name: config-settings-${{ matrix.os }}-${{ matrix.python-version }}
+        name: config-settings-${{ matrix.platform || matrix.os }}-${{ matrix.python-version }}
         path: '${{ runner.temp }}'
 
     - name: "Assert env.DS_CONFIG_SETTINGS and show file contents"
       run: |
         set -xe
         ls -al '${{ runner.temp }}'
-        is_not_win=${{ ! startsWith(matrix.os, 'windows') }}
+        is_not_win=${{ ! startsWith(matrix.platform || matrix.os, 'windows') }}
         case $is_not_win in
           (true)    [[ -f "${{ env.DS_CONFIG_SETTINGS }}" ]] && cat ${{ env.DS_CONFIG_SETTINGS }} || exit 1
                     ;;

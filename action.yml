@@ -58,7 +58,7 @@ runs:
       run: |
         set -xe
         path_dir=$(git config safe.directory)
-        is_not_win=${{ ! startsWith(matrix.os, 'windows') }}
+        is_not_win=${{ ! startsWith(matrix.platform || matrix.os, 'windows') }}
         case $is_not_win in
           (true)    python ${{ github.action_path }}/gh_joinpath.py --name="TO_TOML" "src" "to_toml.py"
                     ;;
@@ -72,7 +72,7 @@ runs:
       shell: bash
       run: |
         set -xe
-        is_not_win=${{ ! startsWith(matrix.os, 'windows') }}
+        is_not_win=${{ ! startsWith(matrix.platform || matrix.os, 'windows') }}
         # git update-index --chmod=+x '${{ env.TO_TOML }}'
         case $is_not_win in
           (true)    chmod +x ${{ env.TO_TOML }}
@@ -97,7 +97,7 @@ runs:
         INPUT_PLUGIN_PARAMETERS: ${{ inputs.plugin_parameters }}
       shell: bash
       run: |
-        is_not_win=${{ ! startsWith(matrix.os, 'windows') }}
+        is_not_win=${{ ! startsWith(matrix.platform || matrix.os, 'windows') }}
         case $is_not_win in
           (true)    path_f=${{ runner.temp }}/${{ inputs.toml_file_name }}
                     python '${{ env.TO_TOML }}' $path_f
@@ -121,7 +121,7 @@ runs:
     - name: upload artifact
       uses: actions/upload-artifact@v4.4.0
       with:
-          name: config-settings-${{ matrix.os }}-${{ inputs.python_version }}
+          name: config-settings-${{ matrix.platform || matrix.os }}-${{ inputs.python_version }}
           path: ${{ env.DS_CONFIG_SETTINGS }}
           retention-days: 1
           if-no-files-found: error
