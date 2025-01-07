@@ -16,11 +16,17 @@ Changelog
    Commit items for NEXT VERSION
    ..............................
 
-   - ci: bump action versions
-   - chore: upgrade pre-commit hooks
-   - chore: upgrade requirements
-
 .. scriv-start-here
+
+.. _changes_1-0-3:
+
+Version 1.0.3 — 2025-01-07
+--------------------------
+
+- chore(action.yml): bump action versions
+- ci: bump action versions
+- chore: upgrade pre-commit hooks
+- chore: upgrade requirements
 
 .. _changes_1-0-2:
 
