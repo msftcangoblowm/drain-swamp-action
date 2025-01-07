@@ -1,3 +1,5 @@
+-c pins-toml.in
+
 black
 blackdoc
 coverage

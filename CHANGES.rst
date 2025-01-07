@@ -16,34 +16,49 @@ Changelog
    Commit items for NEXT VERSION
    ..............................
 
-   - ci: try matrix.platform then matrix.os
-   - ci: add codeql-analysis
-   - ci: add dependency-review and dependabot
-   - refactor(show-me): assert env.DS_CONFIG_SETTINGS into one step
-   - chore: bump actions/checkout
-   - fix(show-me): remove input fetch_tags
-   - fix(action): remove input fetch_tags
-   - docs(README): remove mention of input fetch_tags
-   - fix(action): specify this gha repo and branch v1
-   - fix(show-me): assert env.DS_CONFIG_SETTINGS and show file contents
-   - fix: remove output ds_config_settings. Prefer env.DS_CONFIG_SETTINGS
-   - fix: download artifact then set DS_CONFIG_SETTINGS
-   - fix: improve showing state before upload and after download
-   - ci(show-me): download artifact check contents
-   - fix(action): fix bash boolean evaluation. case not if
-   - fix(gh_joinpath): argparse.parse_known_args returns a tuple
-   - fix(gh_joinpath): parse --dir type pathlib.PurePath
-   - fix: archive id missing python-version
-   - fix(gh_joinpath): add option --dir
-   - fix: on Windows try env.GITHUB_WORKSPACE
-   - fix(action): consolidate output onto one id
-   - fix(gh_joinpath): on Windows outside repository path use Path.as_posix
-   - fix(gh_joinpath): use GITHUB_ACTION_PATH not GITHUB_WORKSPACE
-   - ci(show-me): replace input cache --> fetch_tags
-   - fix(action): single quote Windows path
-   - fix(action): specify path to gh_joinpath
+   - ci: bump action versions
+   - chore: upgrade pre-commit hooks
+   - chore: upgrade requirements
 
 .. scriv-start-here
+
+.. _changes_1-0-2:
+
+Version 1.0.2 — 2024-10-19
+--------------------------
+
+- ci: try matrix.platform then matrix.os
+
+.. _changes_1-0-1:
+
+Version 1.0.1 — 2024-10-04
+--------------------------
+
+- ci: add codeql-analysis
+- ci: add dependency-review and dependabot
+- refactor(show-me): assert env.DS_CONFIG_SETTINGS into one step
+- chore: bump actions/checkout
+- fix(show-me): remove input fetch_tags
+- fix(action): remove input fetch_tags
+- docs(README): remove mention of input fetch_tags
+- fix(action): specify this gha repo and branch v1
+- fix(show-me): assert env.DS_CONFIG_SETTINGS and show file contents
+- fix: remove output ds_config_settings. Prefer env.DS_CONFIG_SETTINGS
+- fix: download artifact then set DS_CONFIG_SETTINGS
+- fix: improve showing state before upload and after download
+- ci(show-me): download artifact check contents
+- fix(action): fix bash boolean evaluation. case not if
+- fix(gh_joinpath): argparse.parse_known_args returns a tuple
+- fix(gh_joinpath): parse --dir type pathlib.PurePath
+- fix: archive id missing python-version
+- fix(gh_joinpath): add option --dir
+- fix: on Windows try env.GITHUB_WORKSPACE
+- fix(action): consolidate output onto one id
+- fix(gh_joinpath): on Windows outside repository path use Path.as_posix
+- fix(gh_joinpath): use GITHUB_ACTION_PATH not GITHUB_WORKSPACE
+- ci(show-me): replace input cache --> fetch_tags
+- fix(action): single quote Windows path
+- fix(action): specify path to gh_joinpath
 
 .. _changes_1-0-0:
 
