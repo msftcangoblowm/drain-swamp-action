@@ -18,6 +18,13 @@ Changelog
 
 .. scriv-start-here
 
+.. _changes_1-0-4:
+
+Version 1.0.4 — 2025-01-15
+--------------------------
+
+- fix(requirements-dev): add nudge pin for package virtualenv to mitigate CVE-2024-53899
+
 .. _changes_1-0-3:
 
 Version 1.0.3 — 2025-01-07
