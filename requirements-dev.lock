@@ -1,4 +1,4 @@
-black==24.10.0
+black==25.1.0
     # via
     #   -r requirements-dev.in
     #   blackdoc
@@ -14,7 +14,7 @@ distlib==0.3.9
     # via virtualenv
 fastjsonschema==2.21.1
     # via validate-pyproject
-filelock==3.16.1
+filelock==3.17.0
     # via virtualenv
 flake8==7.1.1
     # via
@@ -25,9 +25,9 @@ flake8-pyi==24.9.0
     # via -r requirements-dev.in
 flake8-pyproject==1.2.3
     # via -r requirements-dev.in
-identify==2.6.5
+identify==2.6.6
     # via pre-commit
-isort==5.13.2
+isort==6.0.0
     # via -r requirements-dev.in
 markdown-it-py==3.0.0
     # via rich
@@ -35,7 +35,7 @@ mccabe==0.7.0
     # via flake8
 mdurl==0.1.2
     # via markdown-it-py
-more-itertools==10.5.0
+more-itertools==10.6.0
     # via blackdoc
 mypy==1.14.1
     # via -r requirements-dev.in
@@ -55,7 +55,7 @@ platformdirs==4.3.6
     # via
     #   black
     #   virtualenv
-pre-commit==4.0.1
+pre-commit==4.1.0
     # via -r requirements-dev.in
 pycodestyle==2.12.1
     # via flake8
@@ -84,5 +84,5 @@ typing-extensions==4.12.2 ; python_version < "3.10"
     #   rich
 validate-pyproject==0.23
     # via -r requirements-dev.in
-virtualenv==20.28.1
+virtualenv==20.29.1
     # via pre-commit

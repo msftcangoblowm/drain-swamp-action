@@ -16,7 +16,16 @@ Changelog
    Commit items for NEXT VERSION
    ..............................
 
+
 .. scriv-start-here
+
+.. _changes_1-0-5:
+
+Version 1.0.5 — 2025-02-01
+--------------------------
+
+- ci: bump gh actions dependencies version
+- chore: bump requirements version
 
 .. _changes_1-0-4:
 
