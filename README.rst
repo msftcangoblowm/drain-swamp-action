@@ -75,7 +75,7 @@ In an ideal world, the conversation would end here. This technique
 would work for both custom build backends and when using a build backend.
 
 This is the hottest topic in setuptools issues. Below is the suggested
-interm solution, before the community can reach a consensus (aka a PEP).
+interim solution, before the community can reach a consensus (aka a PEP).
 
 config_settings TOML file format
 ---------------------------------
@@ -148,7 +148,7 @@ Github workflows can use this drain-swamp-action to simplify the process.
         python_version: "${{ matrix.python-version }}"
 
    - name: "Download artifact"
-     uses: actions/download-artifact@v4.1.8
+     uses: actions/download-artifact@v8.0.2
      with:
        name: config-settings-${{ matrix.platform || matrix.os }}-${{ matrix.python-version }}
        path: '${{ runner.temp }}'

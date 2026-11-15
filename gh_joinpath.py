@@ -2,7 +2,7 @@
 """
 .. moduleauthor:: Dave Faulkmore <https://mastodon.social/@msftcangoblowme>
 
-Writes path pieces to GITHUB_ENV file. The writen key/value pairs will be
+Writes path pieces to GITHUB_ENV file. The written key/value pairs will be
 available as environment variables **in other steps**, not the step that
 calls this script
 
@@ -22,19 +22,15 @@ Expected contents
 
 The 1st ``src/`` is supposed to be the GITHUB_WORKSPACE absolute path
 
-.. py:data:: DEFAULT_ENV_VAR_NAME
-   :type: str
-   :value: "ENV_VAR"
-
-   Fallback environment variable name
-
 """
+
 import argparse
 import os
 import platform
 import sys
 from pathlib import PurePosixPath, PureWindowsPath
 
+#: str: Fallback environment variable name
 DEFAULT_ENV_VAR_NAME = "ENV_VAR"
 
 

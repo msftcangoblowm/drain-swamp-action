@@ -8,6 +8,38 @@ Changelog
    Feature request
    .................
 
+   - [ci] upgrading pip
+
+     Problem
+     Within drain-swamp-action, wreck testsuite.yml for macos-310 complains.
+
+     .. code:: text
+
+          Installing collected packages: pip
+          Attempting uninstall: pip
+          Found existing installation: pip 23.0.1
+          Uninstalling pip-23.0.1:
+          Successfully uninstalled pip-23.0.1
+          Successfully installed pip-26.1.1
+          Install OpenSSL certificates
+          Error: WARNING: Cache entry deserialization failed, entry ignored
+
+          Collecting certifi
+          Using cached certifi-2026.4.22-py3-none-any.whl.metadata (2.5 kB)
+          Using cached certifi-2026.4.22-py3-none-any.whl (135 kB)
+          Installing collected packages: certifi
+          Successfully installed certifi-2026.4.22
+          -- pip install --upgrade certifi
+           -- removing any existing file or link
+           -- creating symlink to certifi certificate bundle
+           -- setting permissions
+           -- update complete
+          Create complete file
+          Successfully set up CPython (3.10.11)
+
+     Solution:
+     Install certifi before upgrading pip
+
    - add input is_arch
 
    Known regressions
@@ -16,6 +48,9 @@ Changelog
    Commit items for NEXT VERSION
    ..............................
 
+   - chore: license change to encourage upstreaming MPL-2.0
+   - ci: bump versions
+   - chore: requirements bump versions
 
 .. scriv-start-here
 
@@ -95,13 +130,13 @@ Version 1.0.0 — 2024-09-15
 - fix: remove main.sh
 - fix(action): run python scripts without main.sh
 - fix: move python setup step up top
-- fix(gh_joinpath): line seperator between lines
+- fix(gh_joinpath): line separator between lines
 - fix: steps must have unique id
-- fix: env variable path seperator split steps by matrix.os
+- fix: env variable path separator split steps by matrix.os
 - fix: disable cache pip. Does not work and causes runner to fail
 - fix(action): try without upload / download artifact
 - fix(action): set python scripts executable
-- fix(action): typo steps.outputs not steps.outout
+- fix(action): typo steps.outputs not steps.output
 - fix(action): try startsWith rather than contains
 - fix: requirements.txt is required
 - fix(action): specify shell bash

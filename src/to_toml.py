@@ -4,57 +4,32 @@
 
 To produce a valid TOML file, project.name and project.version are required.
 
-.. py:data:: DEFAULT_PROJECT_NAME
-   :type: str
-   :value: "whatever"
-
-   A project name. Is ignored. The value type is str.
-
-.. py:data:: DEFAULT_PROJECT_VERSION
-   :type: str
-   :value: "99.99.99a1.post7.dev6"
-
-      A project version. Is ignored. The value type is str.
-
-.. py:data:: SECTION_NAME
-   :type: str
-   :value: "config-settings"
-
-   drain-swamp build plugin parameters should to into section ``[tool.config-settings]``
-
-.. py:data:: LINE_SEPERATOR
-   :type: str
-   :value: "\n"
-
-   TOML file format does not understand Windows line seperator. **Do not use**
-   :py:data:`os.linesep`
-
-.. py:data:: ENV_TOML_PATH
-   :type: str
-   :value: "DS_CONFIG_SETTINGS"
-
-   The environment variable containing the path to the TOML file. drain-swamp
-   gets config_settings from the TOML file.
-
-.. py:data:: FILE_APPEND_MODE
-   :type: str
-   :value: "a"
-
-   open write mode, append to file
-
 """
+
 import json
 import os
 import sys
 from collections.abc import Mapping
 from pathlib import Path
 
+#: str: A project name. Is ignored. The value type is str.
 DEFAULT_PROJECT_NAME = "whatever"
+
+#: str: A project version. Is ignored. The value type is str.
 DEFAULT_PROJECT_VERSION = "99.99.99a1.post7.dev6"
+
+#: str: drain-swamp build plugin parameters should to into section ``[tool.config-settings]``
 SECTION_NAME = "config-settings"
-LINE_SEPERATOR = "\n"
+
+#: str: TOML file format does not understand Windows line separator. **Do not use** :py:data:`os.linesep`
+LINE_SEPARATOR = "\n"
+
+#: str: The environment variable containing the path to the TOML file. drain-swamp gets config_settings from the TOML file.
 ENV_TOML_PATH = "DS_CONFIG_SETTINGS"
+
+#: str: open write mode, append to file
 FILE_APPEND_MODE = "a"
+
 # steps.outcome.outputs.ds_config_settings. Really want env variable not an output
 # OUTPUT_TOML_PATH = "ds_config_settings"
 
@@ -179,10 +154,10 @@ def main(argv):
 
     # TOML format does not understand ``\r\n``
     toml_contents = (
-        f"""[project]{LINE_SEPERATOR}"""
-        f"""name = \"{DEFAULT_PROJECT_NAME}"{LINE_SEPERATOR}"""
-        f"""version = \"{DEFAULT_PROJECT_VERSION}"{LINE_SEPERATOR}"""
-        f"""[tool.{SECTION_NAME}]{LINE_SEPERATOR}"""
+        f"""[project]{LINE_SEPARATOR}"""
+        f"""name = \"{DEFAULT_PROJECT_NAME}"{LINE_SEPARATOR}"""
+        f"""version = \"{DEFAULT_PROJECT_VERSION}"{LINE_SEPARATOR}"""
+        f"""[tool.{SECTION_NAME}]{LINE_SEPARATOR}"""
     )
 
     try:
@@ -196,7 +171,7 @@ def main(argv):
     for k, v in d_params.items():
         # supports str and paths (especially Windows paths)
         # does not support bool or int or float. Pass those as str
-        toml_contents += f"""{k!s} = '{v!s}'{LINE_SEPERATOR}"""
+        toml_contents += f"""{k!s} = '{v!s}'{LINE_SEPARATOR}"""
     path_toml.write_text(toml_contents)
 
     # export to GITHUB_ENV
