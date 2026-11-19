@@ -48,11 +48,16 @@ Changelog
    Commit items for NEXT VERSION
    ..............................
 
-   - chore: license change to encourage upstreaming MPL-2.0
-   - ci: bump versions
-   - chore: requirements bump versions
-
 .. scriv-start-here
+
+.. _changes_1-0-6:
+
+Version 1.0.6 — 2026-11-19
+--------------------------
+
+- chore: license change to encourage upstreaming MPL-2.0
+- ci: bump versions
+- chore: requirements bump versions
 
 .. _changes_1-0-5:
 

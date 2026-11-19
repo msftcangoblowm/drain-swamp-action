@@ -16,6 +16,14 @@ does not pass thru the config_settings.
 
 To customize the build process, config settings are absolutely needed.
 
+.. PYVERSIONS
+
+\* Python 3.11 through 3.15, pypy-3.11 (untested)
+
+**new in 1.0.x**
+
+MPL-2.0 license; drop py39 py310;
+
 Definitions
 ------------
 
